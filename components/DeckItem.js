@@ -13,8 +13,10 @@ export default class DeckItem extends React.Component {
   
   
   render() {
+  
+  	const {title, postedOn, keynum} = this.props.navigation.state.params
     
-    var date = new Date(this.props.navigation.state.params.date);
+    var date = new Date(postedOn);
     var month = date.getMonth() + 1
     const creationdate = date.getDate() + '/' + month + '/' + date.getFullYear() 
     
@@ -23,7 +25,7 @@ export default class DeckItem extends React.Component {
       
       
         <Text style={[styles.title, this.props.isActive && styles.activeTitle]}>
-        	<Text>{this.props.navigation.state.params.title}</Text>{'\n'}
+        	<Text>{title}</Text>{'\n'}
         	<Text>created on {creationdate}</Text>
         </Text>
         
@@ -35,8 +37,8 @@ export default class DeckItem extends React.Component {
     		onPress={() => this.props.navigation.navigate(
         			'AddCardForm',
         			{ 
-        				title : 'Add card for deck' + this.props.navigation.state.params.title,
-        				deckName : this.props.navigation.state.params.title
+        				deckName : title,
+        				keynum : keynum
         			})} 
     	>
       	<Text> Add new card </Text>

@@ -15,14 +15,24 @@ import DeckItem from './DeckItem'
 
 export default class DeckStart extends React.Component {
   render() {
+  
+  	const {postedOn, title, keynum} = this.props
+  	//console.log("props : ", this.props)
+  
     return (
       <View style={styles.title}>
         
         
         <Button
-          title={"Go to " + this.props.title}
+          title={"Go to " + title}
           onPress={this.props.onPress}
         />
+        
+        <Text>{"title : " + title}</Text>
+        
+        <Text>{"posted on : " + postedOn}</Text>
+        
+        <Text>{"key : " + keynum}</Text>
         
         
         
@@ -30,8 +40,6 @@ export default class DeckStart extends React.Component {
     );
   }
 }
-
-
 
 
 

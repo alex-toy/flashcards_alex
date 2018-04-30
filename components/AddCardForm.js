@@ -13,6 +13,7 @@ const Form = t.form.Form;
 
 const card = t.struct({
   cardQuestion: t.String,
+  cardAnswer: t.String,
 });
 
 
@@ -21,12 +22,14 @@ const card = t.struct({
 class AddCardForm extends Component {
   
 
+  ID = () => { return '_' + Math.random().toString(36).substr(2, 9); }
   
-  handleSubmit = (deckName) => {
+  
+  handleSubmit = (deckKey) => {
     
-    const value = this._form.getValue();
-    console.log(value)
-    const key = timeToKey()
+    const formvalue = this._form.getValue();
+    const key = this.ID()
+    const value = Object.assign({ deckKey : deckKey }, formvalue)
     this.props.dispatch(addCard({
       [key]: value
     }))
@@ -45,11 +48,16 @@ class AddCardForm extends Component {
   
   
   render() {
+  
+  	const {deckName, keynum} = this.props.navigation.state.params
+  
+  
     return (
       <View style={styles.container}>
         
         <Text>Add card form</Text>
-        <Text>deck : {this.props.navigation.state.params.deckName}</Text>
+        <Text>deck : {deckName}</Text>
+        <Text>key : {keynum}</Text>
         
         <Form 
           ref={c => this._form = c} // assign a ref
@@ -58,9 +66,9 @@ class AddCardForm extends Component {
         
         <TouchableOpacity 
     		style={styles.button}
-    		onPress={() => this.handleSubmit(this.props.navigation.state.params.deckName)}
+    		onPress={() => this.handleSubmit(keynum)}
     	>
-      	<Text>Add new card</Text>
+      	<Text>Add new card to deck </Text>
     	</TouchableOpacity>
         
         

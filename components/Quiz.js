@@ -28,23 +28,16 @@ class Quiz extends React.Component {
   }
   
   
-  
-  
-  
-  
-  
   render() {
     
-    var date = new Date(this.props.navigation.state.params.date);
-    var month = date.getMonth() + 1
-    const creationdate = date.getDate() + '/' + month + '/' + date.getFullYear() 
     
-    
-    
-    const { cards } = this.props
+    const { decks } = this.props
+  	
+  
+  	const arraydeck = Object.entries(decks)
   	
   	
-  	const arraycard = Object.entries(cards)
+  	const arraycard = Object.entries(decks)
   	console.log(arraycard)
     
     
@@ -54,48 +47,13 @@ class Quiz extends React.Component {
       
         <Text style={[styles.title, this.props.isActive && styles.activeTitle]}>
         	
-        	<Text>{this.props.navigation.state.params.deckName}</Text>{'\n'}
         	
-        	<Text>question</Text>
+        	<Text>quiz</Text>
         	
         	
         	
         	
         </Text>
-        
-        
-        
-       
-        <TouchableOpacity 
-    		style={styles.button}
-    		onPress={() => this.props.navigation.navigate(
-        			'AddCardForm',
-        			{ 
-        				title : 'Add card for deck' + this.props.navigation.state.params.title,
-        				deckName : this.props.navigation.state.params.title
-        			})} 
-    	>
-      	<Text> Correct </Text>
-    	</TouchableOpacity>
-    	
-    	
-    	
-    	
-    	<TouchableOpacity 
-    		style={styles.button}
-    		onPress={() => this.props.navigation.navigate(
-        			'Quiz',
-        			{ 
-        				title : 'Add card for deck' + this.props.navigation.state.params.title,
-        				deckName : this.props.navigation.state.params.title
-        			})}
-    	>
-      	<Text> incorrect </Text>
-    	</TouchableOpacity>
-        
-        
-        
-        
         
         
         
@@ -133,9 +91,9 @@ const styles = StyleSheet.create({
 
 
 
-function mapStateToProps (cards) {
+function mapStateToProps (decks) {
   return {
-    cards
+    decks
   }
 }
 export default connect(

@@ -48,6 +48,7 @@ class DeckList extends React.Component {
   	
   	
   	const arraydeck = Object.entries(decks)
+
   	
   	
     return (
@@ -62,12 +63,14 @@ class DeckList extends React.Component {
         {arraydeck.map(date_deck => (
         	<DeckStart 
         		title = {date_deck[1].title}
-        		date = {date_deck[0]}
+        		postedOn = {date_deck[1].postedOn}
+        		keynum = {date_deck[1].key}
         		onPress={() => this.props.navigation.navigate(
         			'DeckItem',
         			{ 
         				title : date_deck[1].title,
-        				date : date_deck[0]
+        				postedOn : date_deck[1].postedOn,
+        				keynum : date_deck[1].key,
         			})} 
         	/>
 		))}

@@ -9,9 +9,9 @@ export function fetchDeckResults () {
 }
 
 
-export function submitEntry ({ user, key }) {
+export function submitEntry ({ deck, key }) {
   return AsyncStorage.mergeItem(DECK_STORAGE_KEY, JSON.stringify({
-    [key]: user
+    [key]: deck
   }))
 }
 

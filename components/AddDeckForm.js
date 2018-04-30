@@ -20,11 +20,15 @@ const deck = t.struct({
 
 class AddDeckForm extends Component {
   
+  ID = () => { return '_' + Math.random().toString(36).substr(2, 9); }
   
   handleSubmit = () => {
     
-    const value = this._form.getValue();
-    const key = timeToKey()
+    const formvalue = this._form.getValue();
+    const key = this.ID()
+    const postedOn = timeToKey()
+    const value = Object.assign({ key : key,  postedOn : postedOn }, formvalue)
+    //console.log(value.key)
     this.props.dispatch(addDeck({
       [key]: value
     }))

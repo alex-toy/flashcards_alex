@@ -1,9 +1,10 @@
 import { RECEIVE_DECKS, ADD_DECK, RECEIVE_CARDS, ADD_CARD } from '../actions'
 
 function entries (state = {}, action) {
+
+	const { card, deck, title, question, answer } = action
   
   switch (action.type) {
-    
     
     case RECEIVE_DECKS :
       return {
@@ -15,7 +16,7 @@ function entries (state = {}, action) {
     case ADD_DECK :
       return {
         ...state,
-        ...action.deck
+        ...deck
       }
       
       
@@ -29,7 +30,7 @@ function entries (state = {}, action) {
     case ADD_CARD :
       return {
         ...state,
-        ...action.card
+        ...card
       }
     
     
