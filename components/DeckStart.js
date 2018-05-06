@@ -28,13 +28,6 @@ export default class DeckStart extends React.Component {
           onPress={this.props.onPress}
         />
         
-        <Text>{"title : " + title}</Text>
-        
-        <Text>{"posted on : " + postedOn}</Text>
-        
-        <Text>{"key : " + keynum}</Text>
-        
-        
         
       </View>
     );

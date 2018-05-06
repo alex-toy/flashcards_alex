@@ -9,6 +9,7 @@ import { TabNavigator, TabBarBottom } from 'react-navigation';
 import DeckList from '../DeckList'
 import AddDeck from '../AddDeck'
 import NavScreens from './NavScreens'
+import AddDeckFormTest from '../AddDeckFormTest'
 
 
 const TabNavInit = TabNavigator(
@@ -16,6 +17,7 @@ const TabNavInit = TabNavigator(
   {
     DeckList: { screen: NavScreens },
     AddDeck: { screen: AddDeck },
+    AddDeckFormTest: { screen: AddDeckFormTest },
   },
   
   {

@@ -7,6 +7,8 @@ import DeckList from '../DeckList'
 import DeckItem from '../DeckItem'
 import AddCardForm from '../AddCardForm'
 import Quiz from '../Quiz'
+import CardItem from '../CardItem'
+import Answer from '../Answer'
 
 
 
@@ -29,10 +31,6 @@ class DetailsScreen extends React.Component {
 
 
 
-
-
-
-
 const RootStack = StackNavigator(
   {
     DetailsScreen: {
@@ -49,6 +47,12 @@ const RootStack = StackNavigator(
     },
     Quiz: {
       screen: Quiz,
+    },
+    CardItem: {
+      screen: CardItem,
+    },
+    Answer: {
+      screen: Answer,
     },
   },
   {

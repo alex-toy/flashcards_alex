@@ -6,6 +6,9 @@ import { Location, Permissions } from 'expo';
 import { calculateDirection } from '../utils/helpers';
 
 import AddCard from './AddCard'
+import CardItem from './CardItem'
+
+
 
 import { fetchCardResults } from '../utils/api'
 import { connect } from 'react-redux'
@@ -30,33 +33,41 @@ class Quiz extends React.Component {
   
   render() {
     
-    
+    const { deckTitle } = this.props.navigation.state.params
     const { decks } = this.props
   	
-  
   	const arraydeck = Object.entries(decks)
+  	console.log('arraydeck : ', arraydeck)
+  	console.log('deckTitle : ', deckTitle)
   	
+
+  	const arraycard = Object.entries(decks).filter( card => card[1].title === deckTitle );
+  	console.log('arraycard : ', arraycard)
   	
-  	const arraycard = Object.entries(decks)
-  	console.log(arraycard)
+  	var length = arraycard[0][1].questions.length
+  	//console.log('length : ', length)
     
     
     
     return (
       <View style={styles.container}>
       
-        <Text style={[styles.title, this.props.isActive && styles.activeTitle]}>
+        	<Text style={styles.title}>Quiz for {deckTitle}</Text>
+        	
+        	<Text>Number of cards :  {length}</Text>
         	
         	
-        	<Text>quiz</Text>
-        	
-        	
-        	
-        	
-        </Text>
-        
-        
-        
+        	<TouchableOpacity 
+    			style={styles.button}
+    			onPress={() => this.props.navigation.navigate(
+        				'CardItem',
+        				{ 
+        					deckTitle : deckTitle,
+        				})} 
+    		>
+      		<Text>Move to cards</Text>
+    		</TouchableOpacity>
+
       </View>
     );
   }

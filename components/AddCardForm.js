@@ -12,8 +12,8 @@ import t from 'tcomb-form-native'; // 0.6.9
 const Form = t.form.Form;
 
 const card = t.struct({
-  cardQuestion: t.String,
-  cardAnswer: t.String,
+  question: t.String,
+  answer: t.String,
 });
 
 
@@ -21,29 +21,18 @@ const card = t.struct({
 
 class AddCardForm extends Component {
   
-
-  ID = () => { return '_' + Math.random().toString(36).substr(2, 9); }
   
-  
-  handleSubmit = (deckKey) => {
+  handleSubmit = (title) => {
     
     const formvalue = this._form.getValue();
-    const key = this.ID()
-    const value = Object.assign({ deckKey : deckKey }, formvalue)
-    this.props.dispatch(addCard({
-      [key]: value
-    }))
+    const value = Object.assign({ title : title }, formvalue);
+    console.log(value)
+    this.props.dispatch(addCard(value))
     
-    
-    submitEntryCard({ key, value })
+    this.props.navigation.navigate('Quiz', { deckTitle : title })
+    submitEntryCard({ title, value })
     
   }
-  
-  
-  toHome = () => {
-    this.props.navigation.dispatch(NavigationActions.back({key: 'AddDeckForm'}))
-  }
-  
   
   
   
@@ -57,7 +46,6 @@ class AddCardForm extends Component {
         
         <Text>Add card form</Text>
         <Text>deck : {deckName}</Text>
-        <Text>key : {keynum}</Text>
         
         <Form 
           ref={c => this._form = c} // assign a ref
@@ -66,7 +54,7 @@ class AddCardForm extends Component {
         
         <TouchableOpacity 
     		style={styles.button}
-    		onPress={() => this.handleSubmit(keynum)}
+    		onPress={() => this.handleSubmit(deckName)}
     	>
       	<Text>Add new card to deck </Text>
     	</TouchableOpacity>

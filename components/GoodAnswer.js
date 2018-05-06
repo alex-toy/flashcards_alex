@@ -5,63 +5,56 @@ import { purple, white } from '../utils/colors'
 import { Location, Permissions } from 'expo';
 import { calculateDirection } from '../utils/helpers';
 
-import AddCard from './AddCard'
 
 
 
-export default class DeckItem extends React.Component {
+
+export default class GoodAnswer extends React.Component {
   
   
   render() {
   
-  	const {title, postedOn, keynum} = this.props.navigation.state.params
-  	console.log(title)
-    
-    var date = new Date(postedOn);
-    var month = date.getMonth() + 1
-    const creationdate = date.getDate() + '/' + month + '/' + date.getFullYear() 
-    
+  	
     return (
       <View style={styles.container}>
       
       
         <Text style={[styles.title, this.props.isActive && styles.activeTitle]}>
-        	<Text>{title}</Text>{'\n'}
-        	<Text>created on {creationdate}</Text>
+        	<Text>Good answer !!</Text>{'\n'}
+        	
         </Text>
         
         
-        
-       
         <TouchableOpacity 
     		style={styles.button}
-    		onPress={() => this.props.navigation.navigate(
-        			'AddCardForm',
-        			{ 
-        				deckName : title,
-        				keynum : keynum
-        			})} 
+    		onPress={() => this.handleSubmit(questionArray)}
     	>
-      	<Text> Add new card </Text>
+      	<Text> Submit answer </Text>
     	</TouchableOpacity>
-    	
-    	
     	
     	
     	<TouchableOpacity 
     		style={styles.button}
-    		onPress={() => this.props.navigation.navigate(
-        			'Quiz',
-        			{ 
-        				deckTitle : title,
-        			})}
+    		onPress={() => 
+    			{
+    			this.setState({ cardNumber : this.state.cardNumber<length-1 ? this.state.cardNumber+1 : 0 })
+    			}
+    		}
     	>
-      	<Text> start quiz </Text>
+      	<Text> Move to next question </Text>
     	</TouchableOpacity>
-        
-        
-        
-        
+    	
+    	
+    	<TouchableOpacity 
+    		style={styles.button}
+    		onPress={() => 
+    			{
+    			this.setState({ cardNumber : this.state.cardNumber>0 ? this.state.cardNumber-1 : length-1 })
+    			}
+    		}
+    	>
+      	<Text> Move to preceding question </Text>
+    	</TouchableOpacity>
         
         
         

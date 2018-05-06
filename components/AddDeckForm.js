@@ -25,26 +25,20 @@ class AddDeckForm extends Component {
   handleSubmit = () => {
     
     const formvalue = this._form.getValue();
+    //console.log(formvalue)
     const key = this.ID()
     const postedOn = timeToKey()
-    const value = Object.assign({ key : key,  postedOn : postedOn }, formvalue)
-    //console.log(value.key)
+    const value = Object.assign({ questions : [] }, formvalue)
+    console.log(value)
     this.props.dispatch(addDeck({
-      [key]: value
+      [value.title]: value
     }))
     
-    
+    //this.props.navigation.navigate('DeckList')
     submitEntry({ key, value })
     
     
   }
-  
-  
-  toHome = () => {
-    this.props.navigation.dispatch(NavigationActions.back({key: 'AddDeckForm'}))
-  }
-  
-  
   
   
   render() {
@@ -89,18 +83,7 @@ const styles = StyleSheet.create({
 
 
 
-
-function mapStateToProps (state) {
-  const key = timeToString()
-
-  return {
-    alreadyLogged: state[key] && typeof state[key].today === 'undefined'
-  }
-}
-
-export default connect(
-  mapStateToProps
-)(AddDeckForm)
+export default connect()(AddDeckForm)
 
 
 

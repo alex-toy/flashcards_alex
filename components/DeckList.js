@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet, Animated, Button } from 'react-native'
+import { View, ScrollView, Text, ActivityIndicator, TouchableOpacity, StyleSheet, Animated, Button, ListView, FlatList } from 'react-native'
 import { Foundation } from '@expo/vector-icons'
 import { purple, white } from '../utils/colors'
 import { Location, Permissions } from 'expo';
@@ -20,7 +20,7 @@ import { fetchDeckResults } from '../utils/api'
 
 
 class DeckList extends React.Component {
-  
+
   state = {
     ready: false,
   }
@@ -39,62 +39,63 @@ class DeckList extends React.Component {
   
   render() {
   
-  
-  
-  
   	const { decks } = this.props
-  	
-  	const testdate = new Date()
-  	
-  	
-  	const arraydeck = Object.entries(decks)
-
+  	const arraydeck = Object.entries(decks).filter( deck => deck[1].title !== undefined)
+  	console.log(arraydeck)
+  	const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
   	
   	
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        
-        <Text style={styles.title}>DeckList</Text>
+      <ScrollView contentContainerStyle={styles.contentContainer}>
         
         
-        {arraydeck.length === 0 && <Text style={styles.title}>No deck for now</Text>  }
+        {arraydeck.length === 0 
+        	? <Text style={styles.title}>No deck for now</Text>  
+        	: <Text style={styles.title}>DeckList</Text>
+        }
+        
+        
+        
 
         
         {arraydeck.map(date_deck => (
         	<DeckStart 
         		title = {date_deck[1].title}
-        		postedOn = {date_deck[1].postedOn}
-        		keynum = {date_deck[1].key}
         		onPress={() => this.props.navigation.navigate(
         			'DeckItem',
         			{ 
         				title : date_deck[1].title,
-        				postedOn : date_deck[1].postedOn,
-        				keynum : date_deck[1].key,
         			})} 
         	/>
 		))}
 		
 		
 		
-		<DeckStart 
-        		title = 'testdeck'
-        		date = {testdate}
-        		onPress={() => this.props.navigation.navigate(
-        			'DeckItem',
-        			{ 
-        				title : 'testdeck',
-        				date : {testdate}
-        			})} 
-        	/>
-        	
-        	
-        	
-    
-        	
+        <FlatList
+          data={arraydeck}
+          renderItem={({item}) => 
+          		<DeckStart 
+        			title = {item[0]}
+        			onPress={() => this.props.navigation.navigate(
+        				'DeckItem',
+        				{ 
+        					title : item[0],
+        				})} 
+        		/>
+        }/>
         
         
-      </View>
+        
+        
+        
+        
+        
+        
+        
+			
+        
+        
+      </ScrollView>
     );
   }
 }
@@ -118,6 +119,9 @@ const styles = StyleSheet.create({
   activeTitle: {
     color: 'red',
   },
+  contentContainer: {
+    paddingVertical: 20
+  }
 });
 
 

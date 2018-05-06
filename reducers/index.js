@@ -28,9 +28,15 @@ function entries (state = {}, action) {
     
     
     case ADD_CARD :
+      console.log('ADD_CARD')
+      console.log('title : ', card.title)
+      
       return {
-        ...state,
-        ...card
+        ...state, [card.title] : {
+        	...state[card.title], questions : [
+        		...state[card.title].questions, {question : card.question, answer : card.answer }
+        	]
+        }
       }
     
     
