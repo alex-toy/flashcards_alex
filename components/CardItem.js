@@ -102,7 +102,6 @@ class CardItem extends React.Component {
         
         <Text>
         	<Text>Question : {questionArray[this.state.cardNumber].question}</Text>{'\n'}
-        	<Text>answer : {questionArray[this.state.cardNumber].answer}</Text>{'\n'}
         </Text>
         
         <Form 

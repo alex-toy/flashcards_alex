@@ -42,34 +42,20 @@ class DeckList extends React.Component {
   	const { decks } = this.props
   	const arraydeck = Object.entries(decks).filter( deck => deck[1].title !== undefined)
   	console.log(arraydeck)
-  	const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
   	
   	
     return (
       <ScrollView contentContainerStyle={styles.contentContainer}>
         
+        <Text style={styles.title}>Welcome to Flashcards</Text>
         
         {arraydeck.length === 0 
         	? <Text style={styles.title}>No deck for now</Text>  
-        	: <Text style={styles.title}>DeckList</Text>
+        	: <Text style={styles.title}>Deck list</Text>
         }
         
         
-        
 
-        
-        {arraydeck.map(date_deck => (
-        	<DeckStart 
-        		title = {date_deck[1].title}
-        		onPress={() => this.props.navigation.navigate(
-        			'DeckItem',
-        			{ 
-        				title : date_deck[1].title,
-        			})} 
-        	/>
-		))}
-		
-		
 		
         <FlatList
           data={arraydeck}
@@ -80,20 +66,12 @@ class DeckList extends React.Component {
         				'DeckItem',
         				{ 
         					title : item[0],
+        					length : item[1].questions.length,
         				})} 
         		/>
         }/>
         
-        
-        
-        
-        
-        
-        
-        
-        
-			
-        
+           
         
       </ScrollView>
     );

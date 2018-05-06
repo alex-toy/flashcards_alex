@@ -17,37 +17,27 @@ class AddDeckFormTest extends Component {
   
   constructor(props) {
     super(props);
-    this.state = {text: ''};
+    this.state = {deckName : ''};
   }
   
   
+  ID = () => { return '_' + Math.random().toString(36).substr(2, 9); }
   
-  onSubmit = (value) => {
   
-    this.state = {text: value};
-    console.log('text : ', this.state.text)
-    
-    this.props.dispatch(addDeck(
-    {
-       [this.state.text]:
-       {
-       		title : this.state.text,
-    		questions : []
-       }
-       
+  onSubmit = (event) => {
+    this.setState({ deckName : event.nativeEvent.text });
+    console.log(this.state.deckName)
+    const key = this.ID()
+    const postedOn = timeToKey()
+    const value = Object.assign({ questions : [] }, {title : this.state.deckName} )
+    console.log(value)
+    this.props.dispatch(addDeck({
+      [this.state.deckName]: value
     }))
     
-    //this.toHome()
-    //submitEntry({ key, value })
-    
-    
+    //this.props.navigation.navigate('DeckList')
+    submitEntry({ key, value })
   }
-  
-  
-  
-  
-  
-  
   
   
   
@@ -59,7 +49,7 @@ class AddDeckFormTest extends Component {
           style={{height: 40, border : 'red'}}
           placeholder="Enter here the name of the deck"
           onChangeText={(text) => this.setState({text})}
-          onSubmitEditing={(value) => this.onSubmit(value)}
+          onSubmitEditing={this.onSubmit}
         />
       	<Text>{this.state.text}</Text>
     	

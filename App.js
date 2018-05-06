@@ -31,10 +31,7 @@ export default class App extends Component {
         <View style={{flex: 1}}>
           
           
-        
-          
-          
-          <TabNav />
+        <TabNav />
           
           
         </View>

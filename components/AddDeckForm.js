@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Button, Alert, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, Button, Alert, TouchableOpacity, Text, TextInput } from 'react-native';
 import { submitEntry, removeDeck } from '../utils/api'
 import { timeToString, timeToKey } from '../utils/helpers'
 import { addDeck } from '../actions'
@@ -7,37 +7,25 @@ import { addDeck } from '../actions'
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation'
 
-import t from 'tcomb-form-native'; // 0.6.9
-
-const Form = t.form.Form;
-
-const deck = t.struct({
-  title: t.String,
-});
-
-
 
 
 class AddDeckForm extends Component {
   
   ID = () => { return '_' + Math.random().toString(36).substr(2, 9); }
   
-  handleSubmit = () => {
-    
-    const formvalue = this._form.getValue();
-    //console.log(formvalue)
+  onSubmit = (event) => {
+    this.setState({ deckName : event.nativeEvent.text });
+    console.log(this.state.deckName)
     const key = this.ID()
     const postedOn = timeToKey()
-    const value = Object.assign({ questions : [] }, formvalue)
+    const value = Object.assign({ questions : [] }, {title : this.state.deckName} )
     console.log(value)
     this.props.dispatch(addDeck({
-      [value.title]: value
+      [this.state.deckName]: value
     }))
     
     //this.props.navigation.navigate('DeckList')
     submitEntry({ key, value })
-    
-    
   }
   
   
@@ -45,17 +33,14 @@ class AddDeckForm extends Component {
     return (
       <View style={styles.container}>
         
-        <Form 
-          ref={c => this._form = c} // assign a ref
-          type={deck} 
+    	
+    	<Text style={styles.title}> Deck creation </Text>
+    	<TextInput
+          style={styles.deckInput}
+          placeholder="Enter here the name of the deck"
+          onChangeText={(text) => this.setState({text})}
+          onSubmitEditing={this.onSubmit}
         />
-        
-        <TouchableOpacity 
-    		style={styles.button}
-    		onPress={this.handleSubmit}
-    	>
-      	<Text> Add new deck </Text>
-    	</TouchableOpacity>
         
         
       </View>
@@ -77,7 +62,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#DDDDDD',
     padding: 10,
     margin : 10
-  }
+  },
+  title : {
+    alignItems: 'center',
+    textAlign : 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
+    backgroundColor: '#DDDDDD',
+    padding: 10,
+    margin : 10,
+    borderColor : 'black'
+  },
+  deckInput : {
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    padding: 10,
+    margin : 10,
+    borderRadius: 4,
+    borderWidth: 0.5,
+    borderColor: 'black',
+  },
+  
 });
 
 

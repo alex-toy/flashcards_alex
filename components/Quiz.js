@@ -31,6 +31,9 @@ class Quiz extends React.Component {
   }
   
   
+
+  
+  
   render() {
     
     const { deckTitle } = this.props.navigation.state.params
@@ -67,6 +70,11 @@ class Quiz extends React.Component {
     		>
       		<Text>Move to cards</Text>
     		</TouchableOpacity>
+    		
+    		
+    		
+    		
+    		
 
       </View>
     );
