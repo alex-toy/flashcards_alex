@@ -12,7 +12,10 @@ import { connect } from 'react-redux'
 
 class Answer extends React.Component {
   
-  state = { cardNumber : 0 }
+  constructor(props) {
+    	super(props)
+    	this.state = { cardNumber : 0,}
+  	}
   
   
   seeAnswer = (answer) => {
@@ -38,19 +41,19 @@ class Answer extends React.Component {
     const { decks } = this.props
   	
   	const arraydeck = Object.entries(decks)
-  	console.log('arraydeck : ', arraydeck)
-  	console.log('cardNumber : ', this.state.cardNumber)
+  	//console.log('arraydeck : ', arraydeck)
+  	//console.log('cardNumber : ', this.state.cardNumber)
   	
 
   	const arraycard = Object.entries(decks).filter( card => card[1].title === deckTitle );
-  	console.log('arraycard : ', arraycard)
+  	//console.log('arraycard : ', arraycard)
   	
   	var length = arraycard[0][1].questions.length
   	
   	
   	var question = arraycard[0][1].questions[cardNumber].question
   	var answer = arraycard[0][1].questions[cardNumber].answer
-  	console.log(answer)
+  	//console.log(answer)
   	
   	var feedback = goodAnswer ? "Good answer !!" : "Wrong answer !!"
   
@@ -59,7 +62,7 @@ class Answer extends React.Component {
       <View style={styles.container}>
       
       
-        <Text style={[styles.title, this.props.isActive && styles.activeTitle]}>
+        <Text style={styles.title}>
         	<Text>{feedback}</Text>{'\n'}
         	
         </Text>
@@ -77,19 +80,22 @@ class Answer extends React.Component {
     		style={styles.button}
     		onPress={() => 
     			{
-    			console.log('cardNumber before : ', this.state.cardNumber)
-    			console.log('length : ', length)
-    			//this.setState({ cardNumber : this.state.cardNumber<length-1 ? this.state.cardNumber+1 : 0 })
-    			console.log(this.state.cardNumber<length-1 )
-    			this.state.cardNumber<length-1 
-    				? this.setState({ cardNumber :  this.state.cardNumber+1 })
-    				: this.setState({ cardNumber :  this.state.cardNumber+1 })
-    			this.setState({ cardNumber :  this.state.cardNumber+1 })
-    			console.log('cardNumber after : ', this.state.cardNumber)
-    			this.props.navigation.navigate('CardItem', { 
-    				cardNumber : this.state.cardNumber,
-    				deckTitle : deckTitle 
-    			})
+    			if(this.state.cardNumber<length-1){
+					this.setState({ cardNumber : this.state.cardNumber+1 }, function () {
+    					this.props.navigation.navigate('CardItem', { 
+    						cardNumber : this.state.cardNumber,
+    						deckTitle : deckTitle 
+    					})
+					});
+    			} else {
+    				this.setState({ cardNumber : 0 }, function () {
+    					this.props.navigation.navigate('CardItem', { 
+    						cardNumber : this.state.cardNumber,
+    						deckTitle : deckTitle 
+    					})
+					});
+    			}
+    			
     			}
     		}
     	>
@@ -125,8 +131,7 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 4,
     borderWidth: 0.5,
-    borderColor: '#d6d7da',
-    margin : 10
+    margin : 10,
   },
   title: {
     fontSize: 19,

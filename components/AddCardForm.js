@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Button, Alert, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet, Button, Alert, TouchableOpacity, Text, TextInput, ScrollView } from 'react-native';
 import { submitEntryCard, removeDeck } from '../utils/api'
 import { timeToString, timeToKey } from '../utils/helpers'
 import { addCard } from '../actions'
@@ -7,32 +7,56 @@ import { addCard } from '../actions'
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation'
 
-import t from 'tcomb-form-native'; // 0.6.9
-
-const Form = t.form.Form;
-
-const card = t.struct({
-  question: t.String,
-  answer: t.String,
-});
-
-
-
 
 class AddCardForm extends Component {
+
+	constructor(props) {
+    	super(props)
+    	this.state = { question : '', answer : '',  worth : 0,}
+  	}
   
   
   handleSubmit = (title) => {
     
-    const formvalue = this._form.getValue();
+    const formvalue = {
+    	question : this.state.question, 
+    	answer : this.state.answer, 
+    	worth : Number(this.state.worth)
+    }
     const value = Object.assign({ title : title }, formvalue);
-    console.log(value)
+    //console.log(value)
     this.props.dispatch(addCard(value))
     
     this.props.navigation.navigate('Quiz', { deckTitle : title })
     submitEntryCard({ title, value })
     
   }
+  
+  
+  renderSubmitButton = (deckName) => {
+  
+  	if(this.state.question === '' || this.state.answer === '' || this.state.worth === ''){
+    	return(
+    		<TouchableOpacity 
+    			style={styles.forbiddenButton}
+    			onPress={() => Alert.alert('Tu dois dabord remplir le formulaire, abruti!!')}
+    		>
+      		<Text>Add new card to deck</Text>
+    		</TouchableOpacity>
+    	)
+    } else {
+    	return(
+    		<TouchableOpacity 
+    			style={styles.button}
+    			onPress={() => this.handleSubmit(deckName)}
+    		>
+      		<Text>Add new card to deck</Text>
+    		</TouchableOpacity>
+    	)
+    }
+  }
+  
+  
   
   
   
@@ -42,25 +66,41 @@ class AddCardForm extends Component {
   
   
     return (
+    <ScrollView contentContainerStyle={styles.contentContainer}>
       <View style={styles.container}>
         
-        <Text>Add card form</Text>
-        <Text>deck : {deckName}</Text>
+        <Text style={styles.title}>
+        	Add card form {'\n'}
+        	Deck : {deckName}
+        </Text>
         
-        <Form 
-          ref={c => this._form = c} // assign a ref
-          type={card} 
+        
+    	
+    	<TextInput
+          style={styles.deckInput}
+          placeholder="Enter here the question"
+          onChangeText={(text) => this.setState({question : text})}
         />
         
-        <TouchableOpacity 
-    		style={styles.button}
-    		onPress={() => this.handleSubmit(deckName)}
-    	>
-      	<Text>Add new card to deck </Text>
-    	</TouchableOpacity>
+        <TextInput
+          style={styles.deckInput}
+          placeholder="Enter here the answer"
+          onChangeText={(text) => this.setState({answer : text})}
+        />
+        
+        <TextInput
+          style={styles.deckInput}
+          placeholder="Enter here the question's worth"
+          onChangeText={(text) => this.setState({worth : Number(text)})}
+        />
+        
+    	
+    	{this.renderSubmitButton(deckName)}
+    	
         
         
       </View>
+       </ScrollView>
     );
   }
 }
@@ -72,31 +112,46 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 50,
     padding: 20,
-    backgroundColor: '#ffffff',
+    backgroundColor: 'white',
   },
   button: {
     alignItems: 'center',
     backgroundColor: '#DDDDDD',
     padding: 10,
     margin : 10
-  }
+  },
+  forbiddenButton: {
+    alignItems: 'center',
+    backgroundColor: 'red',
+    padding: 10,
+    margin : 10
+  },
+  deckInput : {
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    padding: 10,
+    margin : 10,
+    borderRadius: 5,
+    borderWidth: 0.5,
+    borderColor: 'black',
+  },
+  title : {
+    alignItems: 'center',
+    textAlign : 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
+    backgroundColor: '#DDDDDD',
+    padding: 10,
+    margin : 10,
+    borderColor : 'black',
+    borderRadius: 5,
+  },
 });
 
 
 
 
-
-function mapStateToProps (state) {
-  const key = timeToString()
-
-  return {
-    alreadyLogged: state[key] && typeof state[key].today === 'undefined'
-  }
-}
-
-export default connect(
-  mapStateToProps
-)(AddCardForm)
+export default connect()(AddCardForm)
 
 
 

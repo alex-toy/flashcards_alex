@@ -20,14 +20,14 @@ export default class DeckStart extends React.Component {
   	//console.log("props : ", this.props)
   
     return (
-      <View style={styles.title}>
+      <View style={styles.container}>
         
-        
+        <Text style={styles.title}>
         <Button
           title={"Go to " + title}
           onPress={this.props.onPress}
         />
-        
+        </Text>
         
       </View>
     );
@@ -41,8 +41,11 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 4,
     borderWidth: 0.5,
-    borderColor: '#d6d7da',
-    margin : 10
+    margin : 10,
+    backgroundColor: 'white',
+    borderRadius: 4,
+    borderWidth: 3,
+    borderColor: 'blue',
   },
   title: {
     fontWeight: 'bold',
@@ -50,26 +53,16 @@ const styles = StyleSheet.create({
     padding: 20,
     margin: 5,
     textAlign : 'center',
-    borderRadius: 4,
-    borderWidth: 3,
-    borderColor: 'blue',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 300
-  },
-  activeTitle: {
-    color: 'red',
   },
   button: {
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: 'blue',
     padding: 10
   },
-  countContainer: {
-    alignItems: 'center',
-    padding: 10
-  },
-  countText: {
-    color: '#FF00FF'
-  }
 });
 
 

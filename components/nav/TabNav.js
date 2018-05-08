@@ -3,9 +3,6 @@ import { Text, View, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { TabNavigator, TabBarBottom } from 'react-navigation';
 
-
-
-
 import DeckList from '../DeckList'
 import AddDeck from '../AddDeck'
 import NavScreens from './NavScreens'

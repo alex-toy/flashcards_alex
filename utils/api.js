@@ -9,6 +9,16 @@ export function fetchDeckResults () {
 }
 
 
+
+export function recordDeck ({ titleKey, deck }) {
+  return AsyncStorage.mergeItem(DECK_STORAGE_KEY, JSON.stringify({
+    [titleKey]: deck
+  }))
+}
+
+
+
+
 export function submitEntry ({ deck, key }) {
   return AsyncStorage.mergeItem(DECK_STORAGE_KEY, JSON.stringify({
     [key]: deck

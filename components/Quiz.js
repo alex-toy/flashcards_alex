@@ -18,21 +18,6 @@ import { connect } from 'react-redux'
 class Quiz extends React.Component {
   
   
-  state = {
-    ready: false,
-  }
-  
-  componentDidMount () {
-    const { dispatch } = this.props
-
-    fetchCardResults()
-      .then((entries) => dispatch(receiveCards(entries)))
-      
-  }
-  
-  
-
-  
   
   render() {
     
@@ -40,15 +25,10 @@ class Quiz extends React.Component {
     const { decks } = this.props
   	
   	const arraydeck = Object.entries(decks)
-  	console.log('arraydeck : ', arraydeck)
-  	console.log('deckTitle : ', deckTitle)
-  	
 
-  	const arraycard = Object.entries(decks).filter( card => card[1].title === deckTitle );
-  	console.log('arraycard : ', arraycard)
+  	const arraycard = arraydeck.filter( card => card[1].title === deckTitle );
   	
   	var length = arraycard[0][1].questions.length
-  	//console.log('length : ', length)
     
     
     
@@ -57,7 +37,7 @@ class Quiz extends React.Component {
       
         	<Text style={styles.title}>Quiz for {deckTitle}</Text>
         	
-        	<Text>Number of cards :  {length}</Text>
+        	<Text style={styles.regularText}>Number of cards :  {length}</Text>
         	
         	
         	<TouchableOpacity 
@@ -87,8 +67,8 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 4,
     borderWidth: 0.5,
-    borderColor: '#d6d7da',
-    margin : 10
+    margin : 10,
+    backgroundColor: 'white',
   },
   title: {
     fontSize: 19,
@@ -97,8 +77,9 @@ const styles = StyleSheet.create({
     padding: 20,
     textAlign : 'center'
   },
-  activeTitle: {
-    color: 'red',
+  regularText: {
+    padding: 20,
+    textAlign : 'center'
   },
   button: {
     alignItems: 'center',

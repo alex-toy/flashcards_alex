@@ -1,17 +1,15 @@
 import React from 'react';
 import { Button, View, Text } from 'react-native';
-import { StackNavigator } from 'react-navigation'; // Version can be specified in package.json
+import { StackNavigator } from 'react-navigation';
 
 
 import DeckList from '../DeckList'
 import DeckItem from '../DeckItem'
 import AddCardForm from '../AddCardForm'
+import AddDeckForm from '../AddDeckForm'
 import Quiz from '../Quiz'
 import CardItem from '../CardItem'
 import Answer from '../Answer'
-
-
-
 
 
 import HomeScreen from '../HomeScreen'
@@ -44,6 +42,9 @@ const RootStack = StackNavigator(
     },
     AddCardForm: {
       screen: AddCardForm,
+    },
+    AddDeckForm: {
+      screen: AddDeckForm,
     },
     Quiz: {
       screen: Quiz,

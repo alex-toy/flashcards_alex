@@ -7,29 +7,7 @@ import { Location, Permissions } from 'expo';
 import { calculateDirection } from '../utils/helpers';
 
 
-import DeckTitleInput from './DeckTitleInput'
-import AddDeckButton from './AddDeckButton'
 import AddDeckForm from './AddDeckForm'
-
-
-import t from 'tcomb-form-native';
-
-const Form = t.form.Form;
-
-const User = t.struct({
-  email: t.String,
-  username: t.String,
-  password: t.String,
-  terms: t.Boolean
-});
-
-
-
-handleSubmit = () => {
-    const value = this._form.getValue();
-    Alert.alert('You tapped the button!')
-    console.log('value: ', value);
-}
 
 
 
@@ -39,7 +17,6 @@ export default class AddDeck extends React.Component {
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         
         <AddDeckForm />
-        
         
       </View>
     );

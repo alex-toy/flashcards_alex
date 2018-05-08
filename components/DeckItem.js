@@ -3,7 +3,7 @@ import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet, Animated }
 import { Foundation } from '@expo/vector-icons'
 import { purple, white } from '../utils/colors'
 import { Location, Permissions } from 'expo';
-import { receiveDecks, addDeck } from '../actions'
+import { receiveDecks, addDeck, resetDeckScore } from '../actions'
 import { connect } from 'react-redux'
 
 import AddCard from './AddCard'
@@ -11,15 +11,6 @@ import { fetchCardResults } from '../utils/api'
 
 
 class DeckItem extends React.Component {
-
-	componentDidMount () {
-    	const { dispatch } = this.props
-
-    	fetchCardResults()
-      	.then((entries) => dispatch(receiveCards(entries)))
-      
-  	}
-
 
 	moveToQuiz = (length, deckTitle) => {
   
@@ -37,10 +28,16 @@ class DeckItem extends React.Component {
     	</TouchableOpacity>
   		)
   	} else {
-  		return( <Text style={styles.options}> No cards for now </Text> )
+  		return( <Text style={styles.forbiddenButton}> No cards for now </Text> )
   	}
   
   }
+  
+  
+  	resetScore = () => {
+  		var deckTitle = this.props.navigation.state.params.title
+  		this.props.dispatch(resetDeckScore({ title : deckTitle }))
+	}
   
   
   render() {
@@ -52,20 +49,33 @@ class DeckItem extends React.Component {
   	
   	const arraydeck = Object.entries(decks)
   	
-  	const arraycard = Object.entries(decks).filter( card => card[1].title === title );
-  	console.log('arraycard : ', arraycard)
+  	const deck = Object.entries(decks).filter( card => card[1].title === title )[0][1];
   	
-  	var length = arraycard[0][1].questions.length
+  	const arraycard = deck.questions;
+  	const length = arraycard.length;
+  	
+  	
+	const totalWorth = arraycard.reduce((acc, currVal)=> acc + currVal.worth,0);
+  	
+  	//console.log('arraycard : ', arraycard)
+  	
+  	
     
     return (
       <View style={styles.container}>
       
       
-        <Text style={[styles.title, this.props.isActive && styles.activeTitle]}>
+        <Text style={styles.title}>
         	<Text>Deck title : {title}</Text>{'\n'}
         </Text>
         
         
+        <Text style={styles.regularText}>
+        	Number of cards :  {length}{'\n'}
+        	Deck total worth :  {totalWorth}{'\n'}
+        	Your current score :  {deck.currentScore}{'\n'}
+        </Text>
+        	
         
        
         <TouchableOpacity 
@@ -88,6 +98,16 @@ class DeckItem extends React.Component {
         
         
         
+        <TouchableOpacity 
+    		style={styles.button}
+    		onPress={this.resetScore} 
+    	>
+      	<Text> Reset score </Text>
+    	</TouchableOpacity>
+        
+        
+        
+        
       </View>
     );
   }
@@ -99,8 +119,8 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 4,
     borderWidth: 0.5,
-    borderColor: '#d6d7da',
-    margin : 10
+    margin : 10,
+    backgroundColor: 'white',
   },
   title: {
     fontSize: 19,
@@ -109,8 +129,10 @@ const styles = StyleSheet.create({
     padding: 20,
     textAlign : 'center'
   },
-  activeTitle: {
-    color: 'red',
+  regularText: {
+    color: 'green',
+    padding: 20,
+    textAlign : 'center'
   },
   button: {
     alignItems: 'center',
@@ -118,10 +140,10 @@ const styles = StyleSheet.create({
     padding: 10,
     margin : 10
   },
-  options: {
+  forbiddenButton: {
     alignItems: 'center',
     textAlign : 'center',
-    backgroundColor: '#DDDDDD',
+    backgroundColor: 'red',
     padding: 10,
     margin : 10
   },

@@ -11,37 +11,14 @@ import { connect } from 'react-redux'
 import DeckStart from './DeckStart'
 
 
-
-import { fetchDeckResults } from '../utils/api'
-
-
-
-
-
-
 class DeckList extends React.Component {
 
-  state = {
-    ready: false,
-  }
-  
-  componentDidMount () {
-    const { dispatch } = this.props
-
-    fetchDeckResults()
-      .then((entries) => dispatch(receiveDecks(entries)))
-      
-  }
-  
-  
-  
-  
   
   render() {
   
   	const { decks } = this.props
   	const arraydeck = Object.entries(decks).filter( deck => deck[1].title !== undefined)
-  	console.log(arraydeck)
+  	//console.log(arraydeck)
   	
   	
     return (
@@ -59,6 +36,7 @@ class DeckList extends React.Component {
 		
         <FlatList
           data={arraydeck}
+          keyExtractor={() => Math.random().toString(36).substr(2, 9)}
           renderItem={({item}) => 
           		<DeckStart 
         			title = {item[0]}
@@ -71,6 +49,10 @@ class DeckList extends React.Component {
         		/>
         }/>
         
+        
+        
+        
+        
            
         
       </ScrollView>
@@ -82,11 +64,6 @@ class DeckList extends React.Component {
 
 
 const styles = StyleSheet.create({
-  container: {
-    borderRadius: 4,
-    borderWidth: 0.5,
-    borderColor: '#d6d7da',
-  },
   title: {
     fontSize: 19,
     fontWeight: 'bold',
