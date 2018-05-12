@@ -52,13 +52,11 @@ class DeckItem extends React.Component {
   	console.log('arraydeck : ', arraydeck)
   	
   	
-  	//const deck = arraydeck[0].filter( card => card[1].title === title );
-  	const deck = arraydeck[0].filter( card => Object.entries(card) )
-  	.filter( item =>  item[0] !== title )
-  	
-  	
+  	const deck = arraydeck.filter( item => item[0] === title )
   	console.log('deck : ', deck)
-  	const arraycard = deck[1].questions
+  	
+  	
+  	const arraycard = deck[0][1].questions
   	const length = arraycard.length;
   	
   	

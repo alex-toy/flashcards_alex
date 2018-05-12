@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Button, Alert, TouchableOpacity, Text, TextInput, ScrollView } from 'react-native';
+import { View, StyleSheet, Button, Alert, TouchableOpacity, Text, TextInput, ScrollView, AsyncStorage } from 'react-native';
 import { submitEntryCard, removeDeck } from '../utils/api'
 import { timeToString, timeToKey } from '../utils/helpers'
 import { addCard } from '../actions'
@@ -18,15 +18,35 @@ class AddCardForm extends Component {
   
   handleSubmit = async (title) => {
     
-    const formvalue = {
+    const question = {
     	question : this.state.question, 
     	answer : this.state.answer, 
     	worth : Number(this.state.worth)
     }
-    const value = Object.assign({ title : title }, formvalue);
+    const value = Object.assign({ title : title }, question);
     //console.log(value)
     
-    //await AsyncStorage.mergeItem('cards', JSON.stringify({ [title] : value }))
+    AsyncStorage.getItem( 'decks_v1' )
+    .then( data => {
+
+    	console.log( data );
+		data = JSON.parse( data );
+    	console.log( data );
+		for (var key in data) {
+    
+    		if (!data.hasOwnProperty(key)) continue;
+			if(data[key].title === title){
+				var obj = data[key];
+				data[key].questions.push(question)
+			}
+    	}
+    	console.log(data)
+      
+      //save the value to AsyncStorage again
+      AsyncStorage.setItem( 'decks_v1', JSON.stringify( data ) );
+
+    }).done();
+    
     
     
     this.props.dispatch(addCard(value))
