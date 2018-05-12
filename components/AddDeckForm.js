@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Button, Alert, TouchableOpacity, Text, TextInput } from 'react-native';
+import { View, StyleSheet, Button, Alert, TouchableOpacity, Text, TextInput, AsyncStorage } from 'react-native';
 import { submitEntry, removeDeck, recordDeck } from '../utils/api'
 import { timeToString, timeToKey } from '../utils/helpers'
 import { addDeck } from '../actions'
 
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation'
+
+
+var STORAGE_KEY = '@flashcards:decks';
 
 
 class AddDeckForm extends Component {
@@ -41,29 +44,61 @@ class AddDeckForm extends Component {
   }
   
   
+	submitEntryold = ({ entry, key }) => {
+  		AsyncStorage.setItem(STORAGE_KEY, JSON.stringify({ [key]: entry }) )
+			.then( data => console.log('Saved selection to disk: ', data ))
+			.catch((error) => console.log('AsyncStorage error: ' + error.message))
+			.done();
+	}
+	
+	
+	submitEntry = ({ entry, key }) => {
+  		return AsyncStorage.mergeItem(CALENDAR_STORAGE_KEY, JSON.stringify({ [key]: entry }))
+	}
+	
+	
 	
   
-  ID = () => { return '_' + Math.random().toString(36).substr(2, 9); }
+	ID = () => { return '_' + Math.random().toString(36).substr(2, 9); }
   
-  onSubmit = () => {
-    //console.log('deckName : ', this.state.deckName)
-    const key = this.ID()
-    const titleKey = this.state.deckName
-    const postedOn = timeToKey()
-    const value = Object.assign({ questions : [] }, {title : this.state.deckName, totalWorth : 0, currentScore : 0} )
-    //console.log(value)
-    this.props.dispatch(addDeck({
-      [this.state.deckName]: value
-    }))
+  	onSubmit =  async () => {
     
-    //console.log('avant')
-    recordDeck({ titleKey, value })
-    //console.log('après')
+    	const deckName = this.state.deckName
+    	var value = {
+    		title : this.state.deckName, 
+    		currentScore : 0,
+    		questions : []
+    	}
+		
+    	await AsyncStorage.mergeItem('decks_v1', JSON.stringify({ [value.title] : value }))
+    	
+    	
+    	//console.log('value : ', value)
+    	//this.props.dispatch(addDeck({ [this.state.deckName]: value  }))
+    	
+    	//var title = this.state.deckName
     
-    //this.props.navigation.navigate('DeckList')
+    	//var deckitem = { key : value  }
+    	//this.submitEntry({ title, value })
+    	
+	}
+	
+	
+	handleSubmitTestentry =  async () => {
     
-    submitEntry({ key, value })
-  }
+    	const formvalue = this.state.testentry
+    	console.log(formvalue)
+    
+    	await AsyncStorage.setItem('user', formvalue);
+    
+	}
+  
+	
+  
+  
+	
+  
+  
   
   
   render() {

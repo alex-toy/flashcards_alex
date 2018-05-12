@@ -80,7 +80,9 @@ class Answer extends React.Component {
     		style={styles.button}
     		onPress={() => 
     			{
-    			if(this.state.cardNumber<length-1){
+    			if(this.state.cardNumber === length-1){
+					this.props.navigation.navigate('DisplayResults', {deckTitle : deckTitle})
+    			} else if(this.state.cardNumber<length-1){
 					this.setState({ cardNumber : this.state.cardNumber+1 }, function () {
     					this.props.navigation.navigate('CardItem', { 
     						cardNumber : this.state.cardNumber,
@@ -99,7 +101,7 @@ class Answer extends React.Component {
     			}
     		}
     	>
-      	<Text> Move to next question </Text>
+      	<Text>{ (this.state.cardNumber === length-1)? 'See your results' : 'Move to next question' }  </Text>
     	</TouchableOpacity>
     	
     	

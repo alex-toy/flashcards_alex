@@ -55,7 +55,7 @@ function entries (state = {}, action) {
         ...state, [card.title] : {
         	...state[card.title], questions : [
         		...state[card.title].questions, {question : card.question, answer : card.answer,  worth : card.worth,}
-        	]
+        		]
         }
       }
     

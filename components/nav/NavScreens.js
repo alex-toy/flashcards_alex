@@ -10,6 +10,7 @@ import AddDeckForm from '../AddDeckForm'
 import Quiz from '../Quiz'
 import CardItem from '../CardItem'
 import Answer from '../Answer'
+import DisplayResults from '../DisplayResults'
 
 
 import HomeScreen from '../HomeScreen'
@@ -54,6 +55,9 @@ const RootStack = StackNavigator(
     },
     Answer: {
       screen: Answer,
+    },
+    DisplayResults: {
+      screen: DisplayResults,
     },
   },
   {

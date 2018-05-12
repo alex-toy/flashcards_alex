@@ -16,7 +16,7 @@ class AddCardForm extends Component {
   	}
   
   
-  handleSubmit = (title) => {
+  handleSubmit = async (title) => {
     
     const formvalue = {
     	question : this.state.question, 
@@ -25,6 +25,10 @@ class AddCardForm extends Component {
     }
     const value = Object.assign({ title : title }, formvalue);
     //console.log(value)
+    
+    //await AsyncStorage.mergeItem('cards', JSON.stringify({ [title] : value }))
+    
+    
     this.props.dispatch(addCard(value))
     
     this.props.navigation.navigate('Quiz', { deckTitle : title })

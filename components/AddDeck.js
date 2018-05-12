@@ -14,7 +14,7 @@ import AddDeckForm from './AddDeckForm'
 export default class AddDeck extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View>
         
         <AddDeckForm />
         

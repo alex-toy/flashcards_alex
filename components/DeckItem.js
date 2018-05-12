@@ -6,7 +6,7 @@ import { Location, Permissions } from 'expo';
 import { receiveDecks, addDeck, resetDeckScore } from '../actions'
 import { connect } from 'react-redux'
 
-import AddCard from './AddCard'
+//import AddCard from './AddCard'
 import { fetchCardResults } from '../utils/api'
 
 
@@ -43,16 +43,24 @@ class DeckItem extends React.Component {
   render() {
   
   	const {title, keynum} = this.props.navigation.state.params
-  	console.log(title)
+  	console.log('title : ', title)
     
     const { decks } = this.props
+  	console.log('decks : ', decks)
   	
   	const arraydeck = Object.entries(decks)
+  	console.log('arraydeck : ', arraydeck)
   	
-  	const deck = Object.entries(decks).filter( card => card[1].title === title )[0][1];
   	
-  	const arraycard = deck.questions;
+  	//const deck = arraydeck[0].filter( card => card[1].title === title );
+  	const deck = arraydeck[0].filter( card => Object.entries(card) )
+  	.filter( item =>  item[0] !== title )
+  	
+  	
+  	console.log('deck : ', deck)
+  	const arraycard = deck[1].questions
   	const length = arraycard.length;
+  	
   	
   	
 	const totalWorth = arraycard.reduce((acc, currVal)=> acc + currVal.worth,0);

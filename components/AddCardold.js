@@ -35,7 +35,7 @@ function StartQuizButton () {
 export default class AddDeck extends React.Component {
   render() {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View>
         
         <Text style={styles.greenLarge}>Udacicards</Text>
         
@@ -56,19 +56,27 @@ export default class AddDeck extends React.Component {
 
 
 const styles = StyleSheet.create({
-  greenLarge: {
+  greenLarge : {
     color: 'green',
     fontWeight: 'bold',
     fontSize: 40
   },
-  red: {
+  red : {
     color: 'red',
     padding: 30
   },
-  button: {
+  button : {
     alignItems: 'center',
     backgroundColor: '#DDDDDD',
     padding: 10,
     margin : 10
+  },
+  addDeck : {
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    padding: 10,
+    margin : 10,
+    justifyContent: 'center',
+    flex: 1,
   },
 });

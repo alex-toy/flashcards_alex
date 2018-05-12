@@ -5,7 +5,7 @@ import { purple, white } from '../utils/colors'
 import { Location, Permissions } from 'expo';
 import { calculateDirection } from '../utils/helpers';
 
-import AddCard from './AddCard'
+//import AddCard from './AddCard'
 import CardItem from './CardItem'
 
 

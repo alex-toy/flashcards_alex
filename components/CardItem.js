@@ -9,7 +9,7 @@ import { fetchDeckResults } from '../utils/api'
 import { updateScoreDeck, receiveDecks } from '../actions'
 
 
-import AddCard from './AddCard'
+//import AddCard from './AddCard'
 
 
 class CardItem extends React.Component {
@@ -28,11 +28,11 @@ class CardItem extends React.Component {
   
   handleSubmit = (deckTitle, questionArray, arraycard, score) => {
   	var userAnswer = this.state.answer;
-    console.log(userAnswer)
+    //console.log(userAnswer)
     var realAnswer = questionArray[this.state.cardNumber].answer
-    console.log(realAnswer)
+    //console.log(realAnswer)
     if(userAnswer === realAnswer){
-    	console.log('this.state.deckName : ', this.state.deckName)
+    	//console.log('this.state.deckName : ', this.state.deckName)
     	this.props.dispatch(updateScoreDeck({ title : this.state.deckName, currentScore : score }))
     	this.props.navigation.navigate('Answer',{ 
     		deckTitle : deckTitle,
@@ -80,7 +80,7 @@ class CardItem extends React.Component {
   
   
   
-  renderMoveNextButton = () => {
+  renderMoveNextButton = (length) => {
   
   	if(this.state.answer === ''){
     	return(
@@ -143,27 +143,27 @@ class CardItem extends React.Component {
   	//console.log('cardNumber : ', cardNumber)
   	
   	const arraycard = Object.entries(decks).filter( card => card[1].title === deckTitle );
-  	//console.log('arraycard : ', arraycard)
+  	console.log('arraycard : ', arraycard)
   	var questionArray = arraycard[0][1].questions
   	
   	var length = arraycard[0][1].questions.length
   	//console.log(answerArray)
   	//console.log(this.state.cardNumber)
   	
-    
+    //const totalWorth = arraycard.reduce((acc, currVal)=> acc + currVal.worth,0);
     
     return (
       <View style={styles.container}>
       
       
-        <Text style={[styles.title, this.props.isActive && styles.activeTitle]}>
+        <Text style={styles.title}>
         	<Text>Card number { this.state.cardNumber + 1 }</Text>{'\n'}
         </Text>
         
         <Text>
         	<Text>{length - this.state.cardNumber - 1} remaining questions</Text>{'\n'}
         	<Text>Question : {questionArray[this.state.cardNumber].question}</Text>{'\n'}
-        	<Text>Question s worth : {questionArray[this.state.cardNumber].worth}</Text>{'\n'}
+        	<Text>Question s worth : {questionArray[this.state.cardNumber].worth} points</Text>{'\n'}
         </Text>
         
         
@@ -178,7 +178,7 @@ class CardItem extends React.Component {
         {this.renderSubmitAnswerButton(deckTitle, questionArray, arraycard, questionArray[this.state.cardNumber].worth)}
         
         
-        {this.renderMoveNextButton()}
+        {this.renderMoveNextButton(length)}
         
     	
     	
@@ -209,7 +209,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 0.5,
     margin : 10,
-    backgroundColor: 'white',
   },
   title: {
     fontSize: 19,

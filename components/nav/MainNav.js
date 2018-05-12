@@ -4,8 +4,6 @@ import { View, Platform, StatusBar } from 'react-native'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { purple, white, blue } from '../../utils/colors'
 
-
-import Live from '../Live'
 import DeckList from '../DeckList'
 import NewDeck from '../NewDeck'
 
