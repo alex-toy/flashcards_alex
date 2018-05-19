@@ -5,63 +5,60 @@ import { purple, white } from '../utils/colors'
 import { Location, Permissions } from 'expo';
 import { calculateDirection } from '../utils/helpers';
 import { StackNavigator } from 'react-navigation';
-import { receiveDecks, addDeck, resetDeckScore, removeDeck } from '../actions'
+import { removeResult, resultlist } from '../actions/resultaction'
 import { connect } from 'react-redux'
 
-import DeckItem from './DeckItem'
+
+class ResultStart extends React.Component {
 
 
-
-
-
-class DeckStart extends React.Component {
-
-
-	handleRemoveDeck = async (id) => {
-  		AsyncStorage.getItem( 'decks_v1' )
+	handleRemoveResult = async (id) => {
+  		AsyncStorage.getItem( 'results_v1' )
     	.then( data => {
-			data = JSON.parse( data );
-    		data[id] = undefined
+			data = JSON.parse( data )
+			console.log(id)
+			data[id] = undefined
 			delete data[id]
       
-      	AsyncStorage.setItem( 'decks_v1', JSON.stringify( data ) );
+      	AsyncStorage.setItem( 'results_v1', JSON.stringify( data ) );
 
     	})
-    	.then( this.props.dispatch(removeDeck(id)) )
+    	.then( this.props.removeResult(id) )
+    	//.then( (data) => this.props.resultlist(data) )
     	.done();
   		
 	}
-
-
-
-
+	
+	
+	
+	
 
 
   render() {
   
-  	const {postedOn, title, keynum, id} = this.props
+  	const {title, date, score, totalWorth, id} = this.props
+  	const mydate = new Date(date)
+  	const formatedDate = mydate.getMonth() + '/' + mydate.getMonth() + '/' + mydate.getFullYear()
+  	const formatedHour = mydate.getHours() + ':' + mydate.getMinutes()
   	
-   
+  	
+  
     return (
       <View style={styles.container}>
         
         <Text style={styles.title}>
-        <Button
-        	style={styles.button}
-        	title={"Go to " + title}
-        	onPress={this.props.onPress}
-        />
+        	Deck : {title}{'\n'}
+        	submited on {formatedDate} at {formatedHour} {'\n'}
+        	you performed : {score} / {totalWorth}
         </Text>
         
         
         <TouchableOpacity 
     		style={styles.button}
-    		onPress={() => this.handleRemoveDeck(id)} 
+    		onPress={() => this.handleRemoveResult(id)} 
     	>
-      	<Text> Remove deck </Text>
+      	<Text> Remove result </Text>
     	</TouchableOpacity>
-        
-        
         
         
       </View>
@@ -87,7 +84,7 @@ const styles = StyleSheet.create({
     color: 'green',
     padding: 7,
     margin: 5,
-    textAlign : 'center',
+    textAlign : 'left',
     alignItems: 'center',
     justifyContent: 'center',
     width: 200
@@ -107,9 +104,37 @@ function mapStateToProps (decks) {
     decks
   }
 }
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+  	removeResult : (id) => {dispatch( removeResult(id) )}, 
+  	}
+}
+
+
 export default connect(
   mapStateToProps,
-)(DeckStart)
+  mapDispatchToProps
+)(ResultStart)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -24,6 +24,10 @@ class Answer extends React.Component {
   
   
   
+  
+  
+  
+  
   componentDidMount () {
       
   
@@ -37,24 +41,14 @@ class Answer extends React.Component {
   
   render() {
   
-  	const { deckTitle, goodAnswer, cardNumber } = this.props.navigation.state.params
+  	const { deckTitle, goodAnswer, cardNumber, id } = this.props.navigation.state.params
     const { decks } = this.props
   	
   	const arraydeck = Object.entries(decks)
-  	//console.log('arraydeck : ', arraydeck)
-  	//console.log('cardNumber : ', this.state.cardNumber)
-  	
-
-  	const arraycard = Object.entries(decks).filter( card => card[1].title === deckTitle );
-  	//console.log('arraycard : ', arraycard)
-  	
+  	const arraycard = Object.entries(decks).filter( card => card[0] === id );
   	var length = arraycard[0][1].questions.length
-  	
-  	
   	var question = arraycard[0][1].questions[cardNumber].question
   	var answer = arraycard[0][1].questions[cardNumber].answer
-  	//console.log(answer)
-  	
   	var feedback = goodAnswer ? "Good answer !!" : "Wrong answer !!"
   
   	
@@ -81,19 +75,24 @@ class Answer extends React.Component {
     		onPress={() => 
     			{
     			if(this.state.cardNumber === length-1){
-					this.props.navigation.navigate('DisplayResults', {deckTitle : deckTitle})
+					this.props.navigation.navigate('DisplayResults', {
+						id : id,
+						deckTitle : deckTitle
+					})
     			} else if(this.state.cardNumber<length-1){
 					this.setState({ cardNumber : this.state.cardNumber+1 }, function () {
     					this.props.navigation.navigate('CardItem', { 
     						cardNumber : this.state.cardNumber,
-    						deckTitle : deckTitle 
+    						deckTitle : deckTitle,
+    						id : id
     					})
 					});
     			} else {
     				this.setState({ cardNumber : 0 }, function () {
     					this.props.navigation.navigate('CardItem', { 
     						cardNumber : this.state.cardNumber,
-    						deckTitle : deckTitle 
+    						deckTitle : deckTitle,
+    						id : id
     					})
 					});
     			}
@@ -157,9 +156,11 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (decks) {
   return {
-    decks
+    decks : decks.deckreducer
   }
 }
+
+
 export default connect(
   mapStateToProps,
 )(Answer)

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Button, Alert, TouchableOpacity, Text, TextInput, AsyncStorage } from 'react-native';
-import { submitEntry, removeDeck, recordDeck } from '../utils/api'
+import { removeDeck, recordDeck } from '../utils/api'
 import { timeToString, timeToKey } from '../utils/helpers'
 import { addDeck } from '../actions'
 
@@ -44,23 +44,9 @@ class AddDeckForm extends Component {
   }
   
   
-	submitEntryold = ({ entry, key }) => {
-  		AsyncStorage.setItem(STORAGE_KEY, JSON.stringify({ [key]: entry }) )
-			.then( data => console.log('Saved selection to disk: ', data ))
-			.catch((error) => console.log('AsyncStorage error: ' + error.message))
-			.done();
-	}
-	
-	
-	submitEntry = ({ entry, key }) => {
-  		return AsyncStorage.mergeItem(CALENDAR_STORAGE_KEY, JSON.stringify({ [key]: entry }))
-	}
-	
-	
-	
-  
 	ID = () => { return '_' + Math.random().toString(36).substr(2, 9); }
   
+  	
   	onSubmit =  async () => {
     
     	const deckName = this.state.deckName
@@ -69,30 +55,17 @@ class AddDeckForm extends Component {
     		currentScore : 0,
     		questions : []
     	}
+    	
+    	var deckitem = { [this.ID()] : value }
 		
-    	await AsyncStorage.mergeItem('decks_v1', JSON.stringify({ [value.title] : value }))
-    	
-    	
-    	//console.log('value : ', value)
-    	//this.props.dispatch(addDeck({ [this.state.deckName]: value  }))
-    	
-    	//var title = this.state.deckName
-    
-    	//var deckitem = { key : value  }
-    	//this.submitEntry({ title, value })
+    	await AsyncStorage.mergeItem( 'decks_v1', JSON.stringify( deckitem ) )
+  		.then( () => this.props.addDeck(deckitem) )
+    	.done();
     	
 	}
 	
 	
-	handleSubmitTestentry =  async () => {
-    
-    	const formvalue = this.state.testentry
-    	console.log(formvalue)
-    
-    	await AsyncStorage.setItem('user', formvalue);
-    
-	}
-  
+	
 	
   
   
@@ -170,7 +143,15 @@ const styles = StyleSheet.create({
 
 
 
-export default connect()(AddDeckForm)
+const mapDispatchToProps = (dispatch) => {
+  return {
+  	addDeck : (deck) => {dispatch( addDeck(deck) )}, 
+  	}
+}
+
+
+
+export default connect(null, mapDispatchToProps)(AddDeckForm)
 
 
 

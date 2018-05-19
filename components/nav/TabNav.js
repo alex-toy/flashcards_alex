@@ -6,7 +6,8 @@ import { TabNavigator, TabBarBottom } from 'react-navigation';
 import DeckList from '../DeckList'
 import AddDeck from '../AddDeck'
 import NavScreens from './NavScreens'
-import AddDeckFormTest from '../AddDeckFormTest'
+//import AddDeckFormTest from '../AddDeckFormTest'
+import Results from '../Results'
 
 
 const TabNavInit = TabNavigator(
@@ -14,6 +15,7 @@ const TabNavInit = TabNavigator(
   {
     DeckList: { screen: NavScreens },
     AddDeck: { screen: AddDeck },
+    Results: { screen: Results },
   },
   
   {
@@ -26,6 +28,8 @@ const TabNavInit = TabNavigator(
         } else if (routeName === 'AddDeck') {
           iconName = `ios-information-circle${focused ? '' : '-outline'}`;
         } else if (routeName === 'NavScreens') {
+          iconName = `ios-options${focused ? '' : '-outline'}`;
+        } else if (routeName === 'Results') {
           iconName = `ios-options${focused ? '' : '-outline'}`;
         }
 

@@ -6,10 +6,9 @@ import { Location, Permissions } from 'expo';
 import { calculateDirection } from '../utils/helpers';
 import { connect } from 'react-redux'
 import { fetchDeckResults } from '../utils/api'
-import { updateScoreDeck, receiveDecks } from '../actions'
+import { updateScoreDeck } from '../actions/deckaction'
 
 
-//import AddCard from './AddCard'
 
 
 class CardItem extends React.Component {
@@ -26,25 +25,23 @@ class CardItem extends React.Component {
   
 
   
-  handleSubmit = (deckTitle, questionArray, arraycard, score) => {
+  handleSubmit = (deckTitle, questionArray, arraycard, score, id) => {
   	var userAnswer = this.state.answer;
-    //console.log(userAnswer)
     var realAnswer = questionArray[this.state.cardNumber].answer
-    //console.log(realAnswer)
     if(userAnswer === realAnswer){
-    	//console.log('this.state.deckName : ', this.state.deckName)
-    	this.props.dispatch(updateScoreDeck({ title : this.state.deckName, currentScore : score }))
+    	this.props.dispatch(updateScoreDeck({ title : this.state.deckName, currentScore : score, id : id }))
     	this.props.navigation.navigate('Answer',{ 
     		deckTitle : deckTitle,
+    		id : id,
     		arraycard : arraycard,
     		length : questionArray.length,
     		goodAnswer : true,
     		cardNumber : this.state.cardNumber
     	})
     } else {
-    	console.log('update deck')
     	this.props.navigation.navigate('Answer',{ 
     		deckTitle : deckTitle,
+    		id : id,
     		arraycard : arraycard,
     		length : questionArray.length,
     		goodAnswer : false,
@@ -55,7 +52,7 @@ class CardItem extends React.Component {
   
   
   
-  renderSubmitAnswerButton = (deckTitle, questionArray, arraycard, worth) => {
+  renderSubmitAnswerButton = (deckTitle, questionArray, arraycard, worth, id) => {
   
   	if(this.state.answer === ''){
     	return(
@@ -70,7 +67,7 @@ class CardItem extends React.Component {
     	return(
     		<TouchableOpacity 
     			style={styles.button}
-    			onPress={() => this.handleSubmit(deckTitle, questionArray, arraycard, worth)}
+    			onPress={() => this.handleSubmit(deckTitle, questionArray, arraycard, worth, id)}
     		>
       		<Text> Submit answer </Text>
     		</TouchableOpacity>
@@ -108,19 +105,8 @@ class CardItem extends React.Component {
   
   
   componentDidMount () {
-    
-    const { dispatch } = this.props
-	fetchDeckResults()
-      .then((entries) => dispatch(receiveDecks(entries)))
-      .catch(function(error) {
-		console.log('There has been a problem with your fetch operation: ' + error.message);
-  		throw error;
-		})
-      
-      
-      
+     
     var cardNumber = 0
-    console.log(this.props.navigation.state.params.cardNumber)
     if(this.props.navigation.state.params.cardNumber !== undefined){
     	cardNumber = this.props.navigation.state.params.cardNumber
     }
@@ -138,19 +124,13 @@ class CardItem extends React.Component {
   render() {
   
   	const { decks } = this.props
-  	const { deckTitle, cardNumber } = this.props.navigation.state.params
+  	const { deckTitle, cardNumber, id } = this.props.navigation.state.params
   	const arraydeck = Object.entries(decks)
-  	//console.log('cardNumber : ', cardNumber)
   	
-  	const arraycard = Object.entries(decks).filter( card => card[1].title === deckTitle );
-  	console.log('arraycard : ', arraycard)
+  	const arraycard = Object.entries(decks).filter( card => card[0] === id );
   	var questionArray = arraycard[0][1].questions
   	
   	var length = arraycard[0][1].questions.length
-  	//console.log(answerArray)
-  	//console.log(this.state.cardNumber)
-  	
-    //const totalWorth = arraycard.reduce((acc, currVal)=> acc + currVal.worth,0);
     
     return (
       <View style={styles.container}>
@@ -175,7 +155,7 @@ class CardItem extends React.Component {
         
         
         
-        {this.renderSubmitAnswerButton(deckTitle, questionArray, arraycard, questionArray[this.state.cardNumber].worth)}
+        {this.renderSubmitAnswerButton(deckTitle, questionArray, arraycard, questionArray[this.state.cardNumber].worth, id)}
         
         
         {this.renderMoveNextButton(length)}
@@ -247,9 +227,11 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (decks) {
   return {
-    decks
+    decks : decks.deckreducer
   }
 }
+
+
 export default connect(
   mapStateToProps,
 )(CardItem)

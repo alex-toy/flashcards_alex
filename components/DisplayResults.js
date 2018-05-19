@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet, Animated, Alert } from 'react-native'
+import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet, Animated, Alert, AsyncStorage } from 'react-native'
 import { Foundation } from '@expo/vector-icons'
 import { purple, white } from '../utils/colors'
 import { Location, Permissions } from 'expo';
 import { calculateDirection } from '../utils/helpers';
-import { receiveDecks, addDeck, resetDeckScore } from '../actions'
-
-import { fetchCardResults } from '../utils/api'
+//import { updateScoreDeck } from '../actions'
+import { addResult } from '../actions/resultaction'
+import { addDeck, resetDeckScore, updateScoreDeck } from '../actions/deckaction'
+//import { fetchCardResults } from '../utils/api'
 import { connect } from 'react-redux'
 
 
@@ -16,20 +17,84 @@ class DisplayResults extends React.Component {
     	super(props)
     	this.state = { cardNumber : 0,}
   	}
-  
-  
-  	resetScore = () => {
-  		var deckTitle = this.props.navigation.state.params.deckTitle
-  		//console.log('deckTitle : ', deckTitle)
-  		this.props.dispatch(resetDeckScore({ title : deckTitle }))
+
+
+  	recordScore = async (title, score) => {
+  	
+  		AsyncStorage.getItem( 'decks_v1' )
+    	.then( data => {
+
+    		console.log( data );
+			data = JSON.parse( data );
+    		console.log( data );
+			for (var key in data) {
+    
+    			if (!data.hasOwnProperty(key)) continue;
+				if(data[key].title === title){
+					data[key].currentScore = score
+				}
+    		}
+    		console.log(data)
+    		
+      	AsyncStorage.setItem( 'decks_v1', JSON.stringify( data ) );
+
+    	}).done();
+  		
+  		this.props.dispatch(updateScoreDeck({ title : title }))
+  		
 	}
 	
 	
 	
-	recordDayQuiz = () => {
-  		var deckTitle = this.props.navigation.state.params.deckTitle
-  		//console.log('deckTitle : ', deckTitle)
-  		this.props.dispatch(resetDeckScore({ title : deckTitle }))
+	
+	handleresetDeckScore = async (id) => {
+  	
+  		AsyncStorage.getItem( 'results_v1' )
+    	.then( data => {
+
+    		console.log( data );
+			data = JSON.parse( data );
+    		console.log( data );
+			for (var key in data) {
+    			if(key === id){
+					data[key].score = 0
+				}
+    		}
+    		console.log(data)
+    		
+      	AsyncStorage.setItem( 'decks_v1', JSON.stringify( data ) );
+
+    	}).done();
+  		
+  		this.props.dispatch(resetDeckScore({ id : id }))
+  		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	ID = () => { return '_' + Math.random().toString(36).substr(2, 9); }
+	
+	recordDayQuiz = async (title, score, totalWorth) => {
+  		
+  		var data = {
+  			datetime : new Date(),
+  			score : score,
+  			deckTitle : title,
+  			totalWorth : totalWorth
+  		}
+  		
+  		var result = { [this.ID()] : data }
+  		
+  		
+  		await AsyncStorage.mergeItem( 'results_v1', JSON.stringify( result ) )
+  		.then( () => this.props.addResult(result) )
+    	.done();
+    	
 	}
 	
 	
@@ -37,21 +102,12 @@ class DisplayResults extends React.Component {
   
   render() {
   
-  	const { deckTitle} = this.props.navigation.state.params
+  	const { deckTitle, id} = this.props.navigation.state.params
     const { decks } = this.props
   	
   	const arraydeck = Object.entries(decks)
-  	//console.log('arraydeck : ', arraydeck)
-  	//console.log('cardNumber : ', this.state.cardNumber)
-  	
-
-  	const arraycards = Object.entries(decks).filter( card => card[1].title === deckTitle )[0][1];
-  	console.log('arrayquestions : ', arraycards.questions)
-  	
-  	//var length = arraycard[0][1].questions.length
-  	
+  	const arraycards = Object.entries(decks).filter( card => card[0] === id )[0][1];
   	const totalWorth = arraycards.questions.reduce((acc, currVal)=> acc + currVal.worth,0);
-  	//console.log(totalWorth)
   	const percentage = Math.round(arraycards.currentScore / totalWorth *100) 
   	
   	var grading
@@ -83,11 +139,12 @@ class DisplayResults extends React.Component {
         <TouchableOpacity 
     		style={styles.button}
     		onPress={() => {
-    			this.resetScore()
+    			this.handleresetDeckScore(id)
     			this.setState({ cardNumber : this.state.cardNumber+1 }, function () {
     					this.props.navigation.navigate('CardItem', { 
     						cardNumber : 0,
-    						deckTitle : deckTitle 
+    						deckTitle : deckTitle,
+    						id : id
     					})
 					});
 				}
@@ -101,7 +158,7 @@ class DisplayResults extends React.Component {
     	
     	<TouchableOpacity 
     		style={styles.button}
-    		//onPress={() => { this.recordDayQuiz() }
+    		onPress={() => this.recordDayQuiz(deckTitle, arraycards.currentScore, totalWorth) }
     	>
       	<Text>Submit for today</Text>
     	</TouchableOpacity>
@@ -112,7 +169,7 @@ class DisplayResults extends React.Component {
     	<TouchableOpacity 
     		style={styles.button}
     		onPress={() => {
-    			this.resetScore()
+    			//this.resetScore()
     			this.setState({ cardNumber : this.state.cardNumber+1 }, function () {
     					this.props.navigation.navigate('DeckList')
 					});
@@ -165,11 +222,22 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (decks) {
   return {
-    decks
+    decks : decks.deckreducer
   }
 }
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+  	addResult : (result) => {dispatch( addResult(result) )}, 
+  	resetDeckScore : (id) => {dispatch( resetDeckScore(id) )}, 
+  	}
+}
+
+
 export default connect(
   mapStateToProps,
+  mapDispatchToProps
 )(DisplayResults)
 
 

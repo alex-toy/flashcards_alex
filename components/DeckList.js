@@ -3,9 +3,11 @@ import { View, ScrollView, Text, ActivityIndicator, TouchableOpacity, StyleSheet
 import { Foundation } from '@expo/vector-icons'
 import { purple, white } from '../utils/colors'
 import { Location, Permissions } from 'expo';
-import { calculateDirection } from '../utils/helpers';
-import { receiveDecks, addDeck } from '../actions'
+import { decklist, addDeck } from '../actions/deckaction'
+//import * as actions from '../actions'
+
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
 const STORAGE_KEY = '@flashcards:decks';
 
@@ -25,26 +27,20 @@ class DeckList extends React.Component {
 			await AsyncStorage.getItem('decks_v1')
   			.then( value  => { 
   				var data = JSON.parse(value)
-  				console.log('data : ', data)
-  				//this.props.dispatch(addDeck({ [data.title] : data  })) }
-  				this.props.dispatch(addDeck(data)) }
+  				this.props.decklist(data) }
   			)
   			.catch((error) => console.log('AsyncStorage error: ' + error.message))
   			.done();
-  			
-  			//this.props.dispatch(addDeck({ [value.title] : value  }))
   		
 	}
 	
 	
 	
-	handleSubmitfetchdeck = async () => {
+	handleSubmitfetchdeckold = async () => {
 	
-		console.log('handleSubmitfetchdeck')
 		await AsyncStorage.getItem('decks_v1')
   			.then( value  => { 
   				var data = JSON.parse(value)
-  				console.log('data : ', data)
   				this.props.dispatch(addDeck({ [data.title] : data  })) 
   			})
   			.catch((error) => console.log('AsyncStorage error: ' + error.message))
@@ -56,11 +52,7 @@ class DeckList extends React.Component {
   render() {
   
   	const { decks } = this.props
-  	console.log('decks : ', decks)
   	const arraydeck = Object.entries(decks)
-  	console.log('arraydeck : ', arraydeck)
-  	
-  	
   	
   	
     return (
@@ -74,40 +66,28 @@ class DeckList extends React.Component {
         }
         
         
-
-		
-        {arraydeck.map( item => 
-        	Object.entries(item).map( item => {
-        	
-        	if(item[1].title !== undefined){
-        	//console.log(item[1].questions.length)
+        
+        {arraydeck.map( item => {
         	return(
         	<DeckStart
-        			key =  {item[1].title}
+        			key =  {item[0]}
         			title = {item[1].title}
+        			id = {item[0]}
         			onPress={() => this.props.navigation.navigate(
         				'DeckItem',
         				{ 
+        					id : item[0],
         					title : item[1].title,
         					length : item[1].questions.length,
         				})} 
-        		/>)}})
+        		/>)
+        	}
         )}
         
         
-        	
-       
-        	
-        	
-        	
-        	<TouchableOpacity 
-    			style={styles.button}
-    			onPress={() => this.handleSubmitfetchdeck()}
-    		>
-      			<Text>fetch deck</Text>
-    		</TouchableOpacity>
         
-        
+
+		
         
         
         
@@ -139,14 +119,49 @@ const styles = StyleSheet.create({
 
 
 
-function mapStateToProps (decks) {
+function mapStateToProps (state) {
   return {
-    decks
+    decks : state.deckreducer
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+  	decklist : (decks) => {dispatch( decklist(decks) )}, 
+  	//addDeck,
+  	}
+}
+
+
+
 export default connect(
   mapStateToProps,
+  mapDispatchToProps,
 )(DeckList)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
-import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet, Animated } from 'react-native'
+import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet, Animated, AsyncStorage } from 'react-native'
 import { Foundation } from '@expo/vector-icons'
 import { purple, white } from '../utils/colors'
 import { Location, Permissions } from 'expo';
-import { receiveDecks, addDeck, resetDeckScore } from '../actions'
+import { receiveDecks, addDeck, resetDeckScore, removeDeck } from '../actions'
 import { connect } from 'react-redux'
 
-//import AddCard from './AddCard'
-import { fetchCardResults } from '../utils/api'
+//import { fetchCardResults } from '../utils/api'
 
 
 class DeckItem extends React.Component {
 
-	moveToQuiz = (length, deckTitle) => {
+	
+	moveToQuiz = (length, deckTitle, id) => {
   
   	if(length > 0){
   		return(
@@ -22,6 +22,7 @@ class DeckItem extends React.Component {
         			'Quiz',
         			{ 
         				deckTitle : deckTitle,
+        				id : id
         			})}
     	>
       	<Text> start quiz </Text>
@@ -34,39 +35,45 @@ class DeckItem extends React.Component {
   }
   
   
-  	resetScore = () => {
-  		var deckTitle = this.props.navigation.state.params.title
-  		this.props.dispatch(resetDeckScore({ title : deckTitle }))
+  	resetScore = async (title) => {
+  	
+  		AsyncStorage.getItem( 'decks_v1' )
+    	.then( data => {
+
+    		console.log( data );
+			data = JSON.parse( data );
+    		console.log( data );
+			for (var key in data) {
+    
+    			if (!data.hasOwnProperty(key)) continue;
+				if(data[key].title === title){
+					data[key].currentScore = 0
+				}
+    		}
+    		console.log(data)
+      
+      	AsyncStorage.setItem( 'decks_v1', JSON.stringify( data ) );
+
+    	}).done();
+  		
+  		this.props.dispatch(resetDeckScore({ title : title }))
 	}
-  
-  
+	
+	
+	
+	
   render() {
   
-  	const {title, keynum} = this.props.navigation.state.params
-  	console.log('title : ', title)
-    
-    const { decks } = this.props
-  	console.log('decks : ', decks)
-  	
+  	const {title, id, keynum} = this.props.navigation.state.params
+  	const { decks } = this.props
   	const arraydeck = Object.entries(decks)
-  	console.log('arraydeck : ', arraydeck)
-  	
-  	
-  	const deck = arraydeck.filter( item => item[0] === title )
-  	console.log('deck : ', deck)
-  	
-  	
+  	const deck = arraydeck.filter( item => item[0] === id )
   	const arraycard = deck[0][1].questions
+  	const score = deck[0][1].currentScore
   	const length = arraycard.length;
+  	const totalWorth = arraycard.reduce((acc, currVal)=> acc + currVal.worth,0);
   	
   	
-  	
-	const totalWorth = arraycard.reduce((acc, currVal)=> acc + currVal.worth,0);
-  	
-  	//console.log('arraycard : ', arraycard)
-  	
-  	
-    
     return (
       <View style={styles.container}>
       
@@ -79,7 +86,7 @@ class DeckItem extends React.Component {
         <Text style={styles.regularText}>
         	Number of cards :  {length}{'\n'}
         	Deck total worth :  {totalWorth}{'\n'}
-        	Your current score :  {deck.currentScore}{'\n'}
+        	Your current score :  {score}{'\n'}
         </Text>
         	
         
@@ -89,6 +96,7 @@ class DeckItem extends React.Component {
     		onPress={() => this.props.navigation.navigate(
         			'AddCardForm',
         			{ 
+        				id : id,
         				deckName : title,
         				keynum : keynum
         			})} 
@@ -99,19 +107,19 @@ class DeckItem extends React.Component {
     	
     	
         
-        {this.moveToQuiz(length, title)}
+        {this.moveToQuiz(length, title, id)}
         
         
         
         
         <TouchableOpacity 
     		style={styles.button}
-    		onPress={this.resetScore} 
+    		onPress={() => this.resetScore(title)} 
     	>
       	<Text> Reset score </Text>
     	</TouchableOpacity>
-        
-        
+    	
+    	
         
         
       </View>
@@ -159,7 +167,7 @@ const styles = StyleSheet.create({
 
 function mapStateToProps (decks) {
   return {
-    decks
+    decks : decks.deckreducer
   }
 }
 export default connect(

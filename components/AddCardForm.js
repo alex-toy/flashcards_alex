@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Button, Alert, TouchableOpacity, Text, TextInput, ScrollView, AsyncStorage } from 'react-native';
 import { submitEntryCard, removeDeck } from '../utils/api'
 import { timeToString, timeToKey } from '../utils/helpers'
-import { addCard } from '../actions'
+import { addCard } from '../actions/deckaction'
 
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation'
@@ -16,33 +16,25 @@ class AddCardForm extends Component {
   	}
   
   
-  handleSubmit = async (title) => {
+  handleSubmit = async (title, id) => {
     
     const question = {
     	question : this.state.question, 
     	answer : this.state.answer, 
     	worth : Number(this.state.worth)
     }
-    const value = Object.assign({ title : title }, question);
-    //console.log(value)
+    const value = Object.assign({ id : id }, question);
+    console.log(value)
     
     AsyncStorage.getItem( 'decks_v1' )
     .then( data => {
-
-    	console.log( data );
 		data = JSON.parse( data );
-    	console.log( data );
 		for (var key in data) {
-    
-    		if (!data.hasOwnProperty(key)) continue;
-			if(data[key].title === title){
-				var obj = data[key];
+			if(key === id){
 				data[key].questions.push(question)
 			}
     	}
-    	console.log(data)
       
-      //save the value to AsyncStorage again
       AsyncStorage.setItem( 'decks_v1', JSON.stringify( data ) );
 
     }).done();
@@ -51,13 +43,12 @@ class AddCardForm extends Component {
     
     this.props.dispatch(addCard(value))
     
-    this.props.navigation.navigate('Quiz', { deckTitle : title })
-    submitEntryCard({ title, value })
+    this.props.navigation.navigate('Quiz', { deckTitle : title, id : id })
     
   }
   
   
-  renderSubmitButton = (deckName) => {
+  renderSubmitButton = (deckName, id) => {
   
   	if(this.state.question === '' || this.state.answer === '' || this.state.worth === ''){
     	return(
@@ -72,7 +63,7 @@ class AddCardForm extends Component {
     	return(
     		<TouchableOpacity 
     			style={styles.button}
-    			onPress={() => this.handleSubmit(deckName)}
+    			onPress={() => this.handleSubmit(deckName, id)}
     		>
       		<Text>Add new card to deck</Text>
     		</TouchableOpacity>
@@ -86,8 +77,8 @@ class AddCardForm extends Component {
   
   render() {
   
-  	const {deckName, keynum} = this.props.navigation.state.params
-  
+  	const {id, deckName, keynum} = this.props.navigation.state.params
+  	
   
     return (
     <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -119,7 +110,7 @@ class AddCardForm extends Component {
         />
         
     	
-    	{this.renderSubmitButton(deckName)}
+    	{this.renderSubmitButton(deckName, id)}
     	
         
         

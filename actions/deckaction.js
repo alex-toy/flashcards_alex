@@ -35,10 +35,10 @@ export function updateScoreDeck ({id, currentScore}) {
 
 
 
-export function resetDeckScore ({title}) {
+export function resetDeckScore ({id}) {
   return {
     type : RESET_DECK_SCORE,
-    title,
+    id,
   }
 }
 
@@ -62,10 +62,10 @@ export function addCard (card) {
 
 
 
-export function removeDeck (title) {
+export function removeDeck (id) {
   return {
     type: REMOVE_DECK,
-    title,
+    id,
   }
 }
 
