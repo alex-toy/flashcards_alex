@@ -21,7 +21,6 @@ function deckreducer (state = {}, action) {
     
     
     case ADD_DECK :
-      console.log(deck)
       return {
         ...state,
         ...deck
@@ -32,7 +31,7 @@ function deckreducer (state = {}, action) {
     case REMOVE_DECK :
       var temp = {}
       for(key in state){
-      	if( key !== title){
+      	if( key !== id){
       		Object.assign(temp,   { [key] : state[key]}  )
       	}
       }
@@ -50,14 +49,12 @@ function deckreducer (state = {}, action) {
       
       
       case RESET_DECK_SCORE :
-    	return {
-        ...state, [action.title] : {
-        	...state[action.title], currentScore : 0
-        }
-      }
+      return { ...state, [id] : { ...state[id], currentScore : 0 } }
+      	
+      	
       
       
-      
+    
     case RECEIVE_CARDS :
       return {
         ...state,

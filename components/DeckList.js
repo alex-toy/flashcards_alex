@@ -4,7 +4,6 @@ import { Foundation } from '@expo/vector-icons'
 import { purple, white } from '../utils/colors'
 import { Location, Permissions } from 'expo';
 import { decklist, addDeck } from '../actions/deckaction'
-//import * as actions from '../actions'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -16,49 +15,37 @@ import DeckStart from './DeckStart'
 
 class DeckList extends React.Component {
 
-	constructor(props) {
-    	super(props)
-    	this.state = { testentry : ''}
-  	}
-
-
+	
 	componentWillMount = async () => {
 	
 			await AsyncStorage.getItem('decks_v1')
   			.then( value  => { 
   				var data = JSON.parse(value)
-  				this.props.decklist(data) }
+  				var temp = {}
+  				for(var key in data){
+  					if(data[key].pseudo === this.props.screenProps.pseudo){
+  						Object.assign(temp, { [key] : data[key] });
+  					}
+  				}
+  				this.props.decklist(temp) }
   			)
   			.catch((error) => console.log('AsyncStorage error: ' + error.message))
   			.done();
-  		
 	}
 	
-	
-	
-	handleSubmitfetchdeckold = async () => {
-	
-		await AsyncStorage.getItem('decks_v1')
-  			.then( value  => { 
-  				var data = JSON.parse(value)
-  				this.props.dispatch(addDeck({ [data.title] : data  })) 
-  			})
-  			.catch((error) => console.log('AsyncStorage error: ' + error.message))
-  			.done();
-  	}
-  
 	
   
   render() {
   
-  	const { decks } = this.props
+  	const { decks, screenProps } = this.props
   	const arraydeck = Object.entries(decks)
-  	
+  	const pseudo = screenProps.pseudo
   	
     return (
       <ScrollView contentContainerStyle={styles.contentContainer}>
         
-        <Text style={styles.title}>Welcome to Flashcards</Text>
+        <Text style={styles.title}>Welcome to Flashcards, {pseudo}</Text>{'\n'}
+        
         
         {arraydeck.length === 0 
         	? <Text style={styles.title}>No deck for now</Text>  
@@ -69,7 +56,7 @@ class DeckList extends React.Component {
         
         {arraydeck.map( item => {
         	return(
-        	<DeckStart
+        		<DeckStart
         			key =  {item[0]}
         			title = {item[1].title}
         			id = {item[0]}
@@ -83,14 +70,6 @@ class DeckList extends React.Component {
         		/>)
         	}
         )}
-        
-        
-        
-
-		
-        
-        
-        
         
         
       </ScrollView>

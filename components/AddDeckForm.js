@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet, Button, Alert, TouchableOpacity, Text, TextInput, AsyncStorage } from 'react-native';
 import { removeDeck, recordDeck } from '../utils/api'
 import { timeToString, timeToKey } from '../utils/helpers'
-import { addDeck } from '../actions'
+import { addDeck } from '../actions/deckaction'
 
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation'
@@ -53,7 +53,8 @@ class AddDeckForm extends Component {
     	var value = {
     		title : this.state.deckName, 
     		currentScore : 0,
-    		questions : []
+    		questions : [],
+    		pseudo : this.props.screenProps.pseudo
     	}
     	
     	var deckitem = { [this.ID()] : value }
@@ -65,16 +66,14 @@ class AddDeckForm extends Component {
 	}
 	
 	
-	
-	
-  
-  
-	
-  
-  
-  
   
   render() {
+  
+  
+  	const { screenProps } = this.props
+  	const pseudo = screenProps.pseudo
+  
+  
     return (
       <View style={styles.container}>
         

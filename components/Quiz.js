@@ -23,12 +23,10 @@ class Quiz extends React.Component {
     
     const { deckTitle, id } = this.props.navigation.state.params
     const { decks } = this.props
-    console.log(decks)
   	
   	const arraydeck = Object.entries(decks)
 
   	const arraycard = arraydeck.filter( card => card[0] === id );
-  	console.log('arraycard', arraycard)
   	var length = arraycard[0][1].questions.length
     
     

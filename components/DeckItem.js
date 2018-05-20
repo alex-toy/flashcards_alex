@@ -3,7 +3,7 @@ import { View, Text, ActivityIndicator, TouchableOpacity, StyleSheet, Animated, 
 import { Foundation } from '@expo/vector-icons'
 import { purple, white } from '../utils/colors'
 import { Location, Permissions } from 'expo';
-import { receiveDecks, addDeck, resetDeckScore, removeDeck } from '../actions'
+import { receiveDecks, addDeck, resetDeckScore, removeDeck } from '../actions/deckaction'
 import { connect } from 'react-redux'
 
 //import { fetchCardResults } from '../utils/api'

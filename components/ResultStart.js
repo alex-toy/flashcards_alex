@@ -14,17 +14,13 @@ class ResultStart extends React.Component {
 
 	handleRemoveResult = async (id) => {
   		AsyncStorage.getItem( 'results_v1' )
-    	.then( data => {
-			data = JSON.parse( data )
-			console.log(id)
-			data[id] = undefined
-			delete data[id]
-      
-      	AsyncStorage.setItem( 'results_v1', JSON.stringify( data ) );
-
+    		.then( data => {
+				data = JSON.parse( data )
+				data[id] = undefined
+				delete data[id]
+      			AsyncStorage.setItem( 'results_v1', JSON.stringify( data ) );
     	})
     	.then( this.props.removeResult(id) )
-    	//.then( (data) => this.props.resultlist(data) )
     	.done();
   		
 	}

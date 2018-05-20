@@ -33,8 +33,7 @@ function resultreducer (state = {}, action) {
       
       
     case REMOVE_RESULT :
-    	console.log('REMOVE_RESULT', id)
-      var temp = {}
+    var temp = {}
       for(key in state){
       	if( key !== action.id){
       		Object.assign(temp,   { [key] : state[key]}  )

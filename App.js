@@ -7,6 +7,7 @@ import { View, Platform, StatusBar, StyleSheet } from 'react-native'
 import { Constants } from 'expo'
 import MainNav from './components/nav/MainNav'
 import TabNav from './components/nav/TabNav'
+import MainNavScreens from './components/nav/MainNavScreens'
 
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
@@ -23,7 +24,7 @@ export default class App extends Component {
         <View style={{flex: 1}}>
           
           
-        <TabNav />
+        <MainNavScreens />
           
           
         </View>

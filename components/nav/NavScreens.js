@@ -18,35 +18,22 @@ import HomeScreen from '../HomeScreen'
 
 
 
-class DetailsScreen extends React.Component {
-  render() {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Details Screen</Text>
-      </View>
-    );
-  }
-}
-
-
-
 const RootStack = StackNavigator(
   {
-    DetailsScreen: {
-      screen: DetailsScreen,
-    },
-    DeckList: {
-      screen: DeckList,
-    },
+    
+    DeckList: { screen: props => <DeckList {...props} /> },
+    
     DeckItem: {
       screen: DeckItem,
     },
     AddCardForm: {
       screen: AddCardForm,
     },
-    AddDeckForm: {
-      screen: AddDeckForm,
-    },
+    
+    
+    AddDeckForm: { screen: props => <AddDeckForm {...props} /> },
+    
+
     Quiz: {
       screen: Quiz,
     },
@@ -70,9 +57,36 @@ const RootStack = StackNavigator(
 
 export default class NavScreens extends React.Component {
   render() {
-    return <RootStack />;
+  
+  	const { screenProps } = this.props
+  
+    return <RootStack screenProps={screenProps}  />;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

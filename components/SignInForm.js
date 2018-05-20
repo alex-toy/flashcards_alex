@@ -8,63 +8,66 @@ import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation'
 
 
-class AddCardForm extends Component {
+class SignInForm extends Component {
 
 	constructor(props) {
     	super(props)
-    	this.state = { question : '', answer : '',  worth : 0,}
+    		this.state = { 
+    		pseudo : '', 
+    		password : '',  
+    	}
   	}
   
   
-  handleSubmit = async (title, id) => {
+  ID = () => { return '_' + Math.random().toString(36).substr(2, 9); }
+  
+  
+  	handleSignIn = async () => {
     
-    const question = {
-    	question : this.state.question, 
-    	answer : this.state.answer, 
-    	worth : Number(this.state.worth)
+    const user = {
+    	pseudo : this.state.pseudo, 
+    	password : this.state.password,
     }
-    const value = Object.assign({ id : id }, question);
     
-    AsyncStorage.getItem( 'decks_v1' )
-    .then( data => {
-		data = JSON.parse( data );
-		for (var key in data) {
-			if(key === id){
-				data[key].questions.push(question)
-			}
-    	}
-      
-      AsyncStorage.setItem( 'decks_v1', JSON.stringify( data ) );
-
-    }).done();
+    var alreadyExists
     
-    
-    
-    this.props.dispatch(addCard(value))
-    
-    this.props.navigation.navigate('Quiz', { deckTitle : title, id : id })
+    await AsyncStorage.getItem( 'users' )
+    	.then( data => {
+			data = JSON.parse( data );
+			for (var key in data) {
+    			if(data[key].pseudo === this.state.pseudo && data[key].password === this.state.password ){
+					Alert.alert('Welcome back ' + this.state.pseudo + ' !' )
+					this.props.navigation.navigate('TabNav', { pseudo : this.state.pseudo })
+					return
+				}
+    		}
+    		Alert.alert('those identifiers are not correct !')
+    		
+    	})
     
   }
   
   
-  renderSubmitButton = (deckName, id) => {
   
-  	if(this.state.question === '' || this.state.answer === '' || this.state.worth === ''){
+  
+  	renderSubmitButton = () => {
+  
+  	if(this.state.pseudo === '' || this.state.password === ''){
     	return(
     		<TouchableOpacity 
     			style={styles.forbiddenButton}
-    			onPress={() => Alert.alert('Tu dois dabord remplir le formulaire, abruti!!')}
+    			onPress={() => Alert.alert('Please fill in the form!!')}
     		>
-      		<Text>Add new card to deck</Text>
+      		<Text>Go to decks !</Text>
     		</TouchableOpacity>
     	)
     } else {
     	return(
     		<TouchableOpacity 
     			style={styles.button}
-    			onPress={() => this.handleSubmit(deckName, id)}
+    			onPress={this.handleSignIn}
     		>
-      		<Text>Add new card to deck</Text>
+      		<Text>Go to decks !</Text>
     		</TouchableOpacity>
     	)
     }
@@ -73,43 +76,45 @@ class AddCardForm extends Component {
   
   
   
-  
   render() {
   
-  	const {id, deckName, keynum} = this.props.navigation.state.params
+  	
   	
   
     return (
     <ScrollView contentContainerStyle={styles.contentContainer}>
       <View style={styles.container}>
         
-        <Text style={styles.title}>
-        	Add card form {'\n'}
-        	Deck : {deckName}
-        </Text>
+        <Text style={styles.title}> Sign In </Text>
         
         
     	
     	<TextInput
           style={styles.deckInput}
-          placeholder="Enter here the question"
-          onChangeText={(text) => this.setState({question : text})}
+          placeholder="Enter here your pseudo"
+          onChangeText={(text) => this.setState({pseudo : text})}
         />
         
         <TextInput
           style={styles.deckInput}
-          placeholder="Enter here the answer"
-          onChangeText={(text) => this.setState({answer : text})}
+          placeholder="Enter here your password"
+          onChangeText={(text) => this.setState({password : text})}
         />
         
-        <TextInput
-          style={styles.deckInput}
-          placeholder="Enter here the question's worth"
-          onChangeText={(text) => this.setState({worth : Number(text)})}
-        />
+        
+        {this.renderSubmitButton()}
         
     	
-    	{this.renderSubmitButton(deckName, id)}
+    	<TouchableOpacity 
+    			style={styles.button}
+    			onPress={() => this.props.navigation.navigate('AddUserForm')} 
+    	>
+      	<Text>Not registered ?</Text>
+    	</TouchableOpacity>
+        
+        
+    	
+    	
     	
         
         
@@ -165,7 +170,7 @@ const styles = StyleSheet.create({
 
 
 
-export default connect()(AddCardForm)
+export default connect()(SignInForm)
 
 
 

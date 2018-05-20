@@ -4,7 +4,7 @@ import { Foundation } from '@expo/vector-icons'
 import { purple, white } from '../utils/colors'
 import { Location, Permissions } from 'expo';
 import { calculateDirection } from '../utils/helpers';
-import { receiveDecks, addDeck } from '../actions'
+//import { receiveDecks, addDeck } from '../actions'
 import { addResult, resultlist } from '../actions/resultaction'
 import { connect } from 'react-redux'
 
@@ -23,8 +23,13 @@ class Results extends React.Component {
 			await AsyncStorage.getItem('results_v1')
   			.then( value  => { 
   				var data = JSON.parse(value)
-  				//console.log('data : ', data)
-  				this.props.resultlist(data) }
+  				var temp = {}
+  				for(var key in data){
+  					if(data[key].pseudo === this.props.screenProps.pseudo){
+  						Object.assign(temp, { [key] : data[key] });
+  					}
+  				}
+  				this.props.resultlist(temp) }
   			)
   			.catch((error) => console.log('AsyncStorage error: ' + error.message))
   			.done();
@@ -34,11 +39,10 @@ class Results extends React.Component {
   
   render() {
   
-  	const { results } = this.props
-  	//console.log(this.props)
-  	//console.log('results : ', results)
+  	const { results, screenProps } = this.props
   	const arrayresults = Object.entries(results)
-  	console.log('arrayresults : ', arrayresults)
+  	const pseudo = screenProps.pseudo
+  	
   	
   	const arrayresultstemp = Object.entries(results)
   	
@@ -46,7 +50,7 @@ class Results extends React.Component {
     return (
       <ScrollView contentContainerStyle={styles.contentContainer}>
         
-        <Text style={styles.title}>Results</Text>
+        <Text style={styles.title}>Results for {pseudo}</Text>
         
         	{arrayresults.map( item => 
         		<ResultStart

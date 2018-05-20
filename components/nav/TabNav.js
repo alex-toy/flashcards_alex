@@ -13,9 +13,12 @@ import Results from '../Results'
 const TabNavInit = TabNavigator(
   
   {
-    DeckList: { screen: NavScreens },
-    AddDeck: { screen: AddDeck },
-    Results: { screen: Results },
+    DeckList: { screen: props => <NavScreens {...props} /> },
+    
+    AddDeck: { screen: props => <AddDeck {...props} /> },
+    
+    Results: { screen: props => <Results {...props} /> },
+    
   },
   
   {
@@ -37,27 +40,48 @@ const TabNavInit = TabNavigator(
       },
     }),
     
+    
     tabBarOptions: {
-      activeTintColor: 'tomato',
-      inactiveTintColor: 'gray',
-    },
+  		activeTintColor: 'blue',
+  		inactiveTintColor: '#6D3C4F',
+  		labelStyle: {
+    	fontSize: 12,
+  		},
+  		style: {
+    		backgroundColor: '#72B091',
+  		},
+  		initialRouteName : 'test',
+	},
+    
     
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
     animationEnabled: false,
     swipeEnabled: false,
-  }
+  },
+  
+  
+  
+  
+  
+  
 );
 
 
 
 
 export default class TabNav extends React.Component {
+
   render() {
+  
+  const { pseudo } = this.props.navigation.state.params
+  
     return ( 
     	
     <View style={styles.container}>
-    	<TabNavInit />
+    	<TabNavInit 
+    		screenProps={{ pseudo : pseudo, }}
+    	/>
     </View>
     	
     	  

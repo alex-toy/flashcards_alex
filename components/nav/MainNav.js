@@ -5,7 +5,7 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { purple, white, blue } from '../../utils/colors'
 
 import DeckList from '../DeckList'
-import NewDeck from '../NewDeck'
+//import NewDeck from '../NewDeck'
 
 
 
@@ -13,9 +13,7 @@ import NewDeck from '../NewDeck'
 const MainNavigator = StackNavigator({
   
 
-  NewDeck: {
-    screen: NewDeck,
-  },
+  
   
   
   DeckList: {

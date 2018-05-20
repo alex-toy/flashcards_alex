@@ -1,10 +1,31 @@
 export const DECKS_LIST = 'DECKS_LIST'
-export const ADD_DECK = 'ADD_DECK'
+
 export const UPDATE_SCORE_DECK = 'UPDATE_SCORE_DECK'
 export const RESET_DECK_SCORE = 'RESET_DECK_SCORE'
 export const REMOVE_DECK = 'REMOVE_DECK'
 export const RECEIVE_CARDS = 'RECEIVE_CARDS'
 export const ADD_CARD = 'ADD_CARD'
+
+
+
+export const ADD_USER = 'ADD_USER'
+
+export function addUser (user) {
+  return {
+    type: ADD_USER,
+    user,
+  }
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -16,12 +37,7 @@ export function decklist (decks) {
 }
 
 
-export function addDeck (deck) {
-  return {
-    type: ADD_DECK,
-    deck,
-  }
-}
+
 
 
 export function updateScoreDeck ({id, currentScore}) {
@@ -62,7 +78,7 @@ export function addCard (card) {
 
 
 
-export function removeDeck ({id}) {
+export function removeDeck (id) {
   return {
     type: REMOVE_DECK,
     id,

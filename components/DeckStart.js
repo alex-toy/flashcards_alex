@@ -5,7 +5,7 @@ import { purple, white } from '../utils/colors'
 import { Location, Permissions } from 'expo';
 import { calculateDirection } from '../utils/helpers';
 import { StackNavigator } from 'react-navigation';
-import { receiveDecks, addDeck, resetDeckScore, removeDeck } from '../actions'
+import { receiveDecks, addDeck, resetDeckScore, removeDeck } from '../actions/deckaction'
 import { connect } from 'react-redux'
 
 import DeckItem from './DeckItem'
@@ -18,22 +18,17 @@ class DeckStart extends React.Component {
 
 
 	handleRemoveDeck = async (id) => {
-  		AsyncStorage.getItem( 'decks_v1' )
-    	.then( data => {
-			data = JSON.parse( data );
-    		data[id] = undefined
-			delete data[id]
-      
-      	AsyncStorage.setItem( 'decks_v1', JSON.stringify( data ) );
-
+  		await AsyncStorage.getItem( 'decks_v1' )
+    		.then( data => {
+    			data = JSON.parse( data );
+    			data[id] = undefined
+				delete data[id]
+      			AsyncStorage.setItem( 'decks_v1', JSON.stringify( data ) );
     	})
-    	.then( this.props.dispatch(removeDeck(id)) )
+    	.then( this.props.removeDeck(id) )
     	.done();
   		
 	}
-
-
-
 
 
 
@@ -102,15 +97,26 @@ const styles = StyleSheet.create({
 
 
 
-function mapStateToProps (decks) {
+
+function mapStateToProps (state) {
   return {
-    decks
+    decks : state.deckreducer
   }
 }
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+  	removeDeck : (id) => {dispatch( removeDeck({id : id}) )},
+  	}
+}
+
+
+
 export default connect(
   mapStateToProps,
+  mapDispatchToProps,
 )(DeckStart)
-
 
 
 

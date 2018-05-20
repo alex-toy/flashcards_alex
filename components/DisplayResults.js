@@ -23,24 +23,22 @@ class DisplayResults extends React.Component {
   	
   		AsyncStorage.getItem( 'decks_v1' )
     	.then( data => {
-
-    		console.log( data );
 			data = JSON.parse( data );
-    		console.log( data );
-			for (var key in data) {
+    		for (var key in data) {
     
     			if (!data.hasOwnProperty(key)) continue;
 				if(data[key].title === title){
 					data[key].currentScore = score
 				}
     		}
-    		console.log(data)
-    		
-      	AsyncStorage.setItem( 'decks_v1', JSON.stringify( data ) );
+    	AsyncStorage.setItem( 'decks_v1', JSON.stringify( data ) );
 
-    	}).done();
+    	})
+  		//.then( () => this.props.dispatch(updateScoreDeck({ title : title })) )
+  		.then( () => updateScoreDeck(title) )
+  		.done()
   		
-  		this.props.dispatch(updateScoreDeck({ title : title }))
+  		//updateScoreDeck(title)
   		
 	}
 	
@@ -48,32 +46,27 @@ class DisplayResults extends React.Component {
 	
 	
 	handleresetDeckScore = async (id) => {
-  	
-  		AsyncStorage.getItem( 'results_v1' )
+  	console.log(id)
+  		AsyncStorage.getItem( 'decks_v1' )
     	.then( data => {
-
-    		console.log( data );
 			data = JSON.parse( data );
-    		console.log( data );
-			for (var key in data) {
+			console.log(data)
+    		for (var key in data) {
     			if(key === id){
+					console.log(data[key])
+					data[key].currentScore = 0
 					data[key].score = 0
 				}
     		}
     		console.log(data)
-    		
-      	AsyncStorage.setItem( 'decks_v1', JSON.stringify( data ) );
+      		AsyncStorage.setItem( 'decks_v1', JSON.stringify(data) );
 
-    	}).done();
-  		
-  		this.props.dispatch(resetDeckScore({ id : id }))
+    	})
+    	//.then( () => this.props.dispatch(resetDeckScore({ id : id })) )
+    	.then( () => this.props.resetDeckScore(id) )
+    	.done();
   		
 	}
-	
-	
-	
-	
-	
 	
 	
 	
@@ -85,7 +78,8 @@ class DisplayResults extends React.Component {
   			datetime : new Date(),
   			score : score,
   			deckTitle : title,
-  			totalWorth : totalWorth
+  			totalWorth : totalWorth,
+  			pseudo : this.props.screenProps.pseudo
   		}
   		
   		var result = { [this.ID()] : data }
@@ -103,7 +97,9 @@ class DisplayResults extends React.Component {
   render() {
   
   	const { deckTitle, id} = this.props.navigation.state.params
-    const { decks } = this.props
+    const { decks, screenProps } = this.props
+    
+    console.log(decks)
   	
   	const arraydeck = Object.entries(decks)
   	const arraycards = Object.entries(decks).filter( card => card[0] === id )[0][1];
@@ -230,7 +226,11 @@ function mapStateToProps (decks) {
 const mapDispatchToProps = (dispatch) => {
   return {
   	addResult : (result) => {dispatch( addResult(result) )}, 
-  	resetDeckScore : (id) => {dispatch( resetDeckScore(id) )}, 
+  	resetDeckScore : (id) => {dispatch( resetDeckScore({ id : id }) )}, 
+  	updateScoreDeck : (title) => {dispatch( updateScoreDeck({ title : title }) )}, 
+  	
+  	//updateScoreDeck(title)
+  	
   	}
 }
 

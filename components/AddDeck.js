@@ -12,11 +12,18 @@ import AddDeckForm from './AddDeckForm'
 
 
 export default class AddDeck extends React.Component {
+  
   render() {
+  
+  	const { screenProps } = this.props
+  	const pseudo = screenProps.pseudo
+  
+  
+  
     return (
       <View>
         
-        <AddDeckForm />
+        <AddDeckForm screenProps={screenProps} />
         
       </View>
     );
