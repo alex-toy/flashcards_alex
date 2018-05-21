@@ -7,6 +7,8 @@ import { addCard } from '../actions/deckaction'
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation'
 
+import ModalInput from './ModalInput'
+
 
 class SignInForm extends Component {
 
@@ -14,8 +16,14 @@ class SignInForm extends Component {
     	super(props)
     		this.state = { 
     		pseudo : '', 
-    		password : '',  
+    		password : '',
+    		modalVisible : false,
+    		modalMessage : '',
     	}
+  	}
+  	
+  	setModalVisible(visible) {
+    	this.setState({modalVisible: visible});
   	}
   
   
@@ -56,7 +64,10 @@ class SignInForm extends Component {
     	return(
     		<TouchableOpacity 
     			style={styles.forbiddenButton}
-    			onPress={() => Alert.alert('Please fill in the form!!')}
+    			onPress={() => {
+    				this.setModalVisible(true)
+    				this.setState({ modalMessage : 'Please fill in the form!!' })
+    			}}
     		>
       		<Text style={styles.buttonText}>Go to decks !</Text>
     		</TouchableOpacity>
@@ -113,6 +124,13 @@ class SignInForm extends Component {
     	>
       	<Text style={styles.buttonText}>Not registered ?</Text>
     	</TouchableOpacity>
+    	
+    	
+    	
+    	<ModalInput 
+    		modalVisible={this.state.modalVisible} 
+    		message={this.state.modalMessage} 
+    	/>
         
         
     	

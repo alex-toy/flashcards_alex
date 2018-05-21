@@ -7,6 +7,8 @@ import { addUser } from '../actions/useraction'
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation'
 
+import ModalInput from './ModalInput'
+
 
 class AddUserForm extends Component {
 
@@ -14,8 +16,15 @@ class AddUserForm extends Component {
     	super(props)
     		this.state = { 
     		pseudo : '', 
-    		password : '',  
+    		password : '',
+    		modalVisible : false,
+    		modalMessage : '',
     	}
+  	}
+  	
+  	
+  	setModalVisible(visible) {
+    	this.setState({modalVisible: visible});
   	}
   	
 	
@@ -67,7 +76,10 @@ class AddUserForm extends Component {
     	return(
     		<TouchableOpacity 
     			style={styles.forbiddenButton}
-    			onPress={() => Alert.alert('Please fill in the form!!')}
+    			onPress={() => {
+    				this.setModalVisible(true)
+    				this.setState({ modalMessage : 'Please fill in the form!!' })
+    			}}
     		>
       		<Text style={styles.buttonText}>Add new user</Text>
     		</TouchableOpacity>
@@ -86,14 +98,9 @@ class AddUserForm extends Component {
   
   
   
-  
-  
   render() {
   
-  	
-  	
-  
-    return (
+  	return (
       
       
       <View style={styles.container}>
@@ -125,6 +132,13 @@ class AddUserForm extends Component {
     		>
       		<Text style={styles.buttonText}>Already registered ?</Text>
     		</TouchableOpacity>
+    		
+    		
+    		<ModalInput 
+    			modalVisible={this.state.modalVisible} 
+    			message={this.state.modalMessage} 
+    		/>
+    		
         
         </View>
       </View>

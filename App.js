@@ -11,7 +11,7 @@ import { Provider } from 'react-redux'
 import rootReducer from './reducers/index'
 
 import NavScreens from './components/nav/NavScreens'
-
+import ModalExample from './components/ModalExample'
 
 
 export default class App extends Component {
@@ -19,8 +19,7 @@ export default class App extends Component {
     return (
       <Provider store={createStore(rootReducer)}>
         <View style={{ flex: 1, }}>
-          
-          
+        
         <MainNavScreens />
           
           
