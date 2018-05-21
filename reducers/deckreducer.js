@@ -14,9 +14,7 @@ function deckreducer (state = {}, action) {
     
     
     case DECKS_LIST :
-      return {
-        ...state, ...action.decks,
-      }
+      return { ...state, ...action.decks, }
       
     
     

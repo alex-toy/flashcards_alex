@@ -42,7 +42,9 @@ class AddCardForm extends Component {
     
     this.props.dispatch(addCard(value))
     
-    this.props.navigation.navigate('Quiz', { deckTitle : title, id : id })
+    //this.props.navigation.navigate('Quiz', { deckTitle : title, id : id })
+    //this.props.navigation.navigate('DeckList')
+    this.props.navigation.navigate('DeckItem', {title : title, id : id})
     
   }
   

@@ -38,6 +38,7 @@ class DeckList extends React.Component {
   render() {
   
   	const { decks, screenProps } = this.props
+  	console.log(decks)
   	const arraydeck = Object.entries(decks)
   	const pseudo = screenProps.pseudo
   	
@@ -86,7 +87,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'green',
     padding: 20,
-    textAlign : 'center'
+    textAlign : 'center',
+    alignSelf: 'center',
   },
   activeTitle: {
     color: 'red',

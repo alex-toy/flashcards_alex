@@ -58,7 +58,7 @@ class SignInForm extends Component {
     			style={styles.forbiddenButton}
     			onPress={() => Alert.alert('Please fill in the form!!')}
     		>
-      		<Text>Go to decks !</Text>
+      		<Text style={styles.buttonText}>Go to decks !</Text>
     		</TouchableOpacity>
     	)
     } else {
@@ -67,7 +67,7 @@ class SignInForm extends Component {
     			style={styles.button}
     			onPress={this.handleSignIn}
     		>
-      		<Text>Go to decks !</Text>
+      		<Text style={styles.buttonText}>Go to decks !</Text>
     		</TouchableOpacity>
     	)
     }
@@ -82,8 +82,10 @@ class SignInForm extends Component {
   	
   
     return (
-    <ScrollView contentContainerStyle={styles.contentContainer}>
+    
       <View style={styles.container}>
+      
+      <View style={styles.newUserForm}>
         
         <Text style={styles.title}> Sign In </Text>
         
@@ -109,17 +111,17 @@ class SignInForm extends Component {
     			style={styles.button}
     			onPress={() => this.props.navigation.navigate('AddUserForm')} 
     	>
-      	<Text>Not registered ?</Text>
+      	<Text style={styles.buttonText}>Not registered ?</Text>
     	</TouchableOpacity>
         
         
     	
     	
-    	
+    	</View>
         
         
       </View>
-       </ScrollView>
+       
     );
   }
 }
@@ -128,44 +130,52 @@ class SignInForm extends Component {
 
 const styles = StyleSheet.create({
   container: {
+  	flex: 1,
+    flexDirection: 'column',
     justifyContent: 'center',
-    marginTop: 50,
-    padding: 20,
-    backgroundColor: 'white',
+    alignItems: 'stretch',
+  },
+  newUserForm: {
+  	backgroundColor: 'powderblue',
+  	borderRadius: 7,
+    borderWidth: 1,
+    borderColor: 'black',
+  	alignItems: 'stretch',
+  	margin : 20,
   },
   button: {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 10,
-    margin : 10
+    margin : 10,
+    backgroundColor: 'steelblue',
+    padding : 10,
+    borderRadius: 7,
   },
   forbiddenButton: {
-    alignItems: 'center',
+    margin : 10,
     backgroundColor: 'red',
-    padding: 10,
-    margin : 10
+    padding : 10,
+    borderRadius: 7,
   },
   deckInput : {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 10,
-    margin : 10,
-    borderRadius: 5,
-    borderWidth: 0.5,
+  	backgroundColor: 'white',
+    borderRadius: 7,
+    borderWidth: 1,
     borderColor: 'black',
+    color : 'black',
+    padding : 10,
+    margin : 10,
   },
   title : {
-    alignItems: 'center',
-    textAlign : 'center',
-    fontSize: 20,
+    fontSize: 19,
     fontWeight: 'bold',
-    backgroundColor: '#DDDDDD',
-    padding: 10,
     margin : 10,
-    borderColor : 'black',
-    borderRadius: 5,
+    alignSelf: 'center',
   },
+  buttonText : {
+  	alignSelf: 'center',
+  	color : 'black',
+  }
 });
+
 
 
 

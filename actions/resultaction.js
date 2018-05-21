@@ -16,7 +16,6 @@ export function fetchResults (results) {
 
 
 export function addResult (result) {
-  //console.log(result)
   return {
     type: ADD_RESULT,
     result

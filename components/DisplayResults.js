@@ -62,7 +62,6 @@ class DisplayResults extends React.Component {
       		AsyncStorage.setItem( 'decks_v1', JSON.stringify(data) );
 
     	})
-    	//.then( () => this.props.dispatch(resetDeckScore({ id : id })) )
     	.then( () => this.props.resetDeckScore(id) )
     	.done();
   		
@@ -99,9 +98,7 @@ class DisplayResults extends React.Component {
   	const { deckTitle, id} = this.props.navigation.state.params
     const { decks, screenProps } = this.props
     
-    console.log(decks)
-  	
-  	const arraydeck = Object.entries(decks)
+    const arraydeck = Object.entries(decks)
   	const arraycards = Object.entries(decks).filter( card => card[0] === id )[0][1];
   	const totalWorth = arraycards.questions.reduce((acc, currVal)=> acc + currVal.worth,0);
   	const percentage = Math.round(arraycards.currentScore / totalWorth *100) 
@@ -228,8 +225,6 @@ const mapDispatchToProps = (dispatch) => {
   	addResult : (result) => {dispatch( addResult(result) )}, 
   	resetDeckScore : (id) => {dispatch( resetDeckScore({ id : id }) )}, 
   	updateScoreDeck : (title) => {dispatch( updateScoreDeck({ title : title }) )}, 
-  	
-  	//updateScoreDeck(title)
   	
   	}
 }

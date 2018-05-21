@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   },
   deckInput : {
     alignItems: 'center',
-    backgroundColor: '#DDDDDD',
+    backgroundColor: 'white',
     padding: 10,
     margin : 10,
     borderRadius: 5,

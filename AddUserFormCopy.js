@@ -69,7 +69,7 @@ class AddUserForm extends Component {
     			style={styles.forbiddenButton}
     			onPress={() => Alert.alert('Please fill in the form!!')}
     		>
-      		<Text style={styles.buttonText}>Add new user</Text>
+      		<Text>Add new user</Text>
     		</TouchableOpacity>
     	)
     } else {
@@ -78,7 +78,7 @@ class AddUserForm extends Component {
     			style={styles.button}
     			onPress={this.handleAddUser}
     		>
-      		<Text style={styles.buttonText}>Add new user</Text>
+      		<Text>Add new user</Text>
     		</TouchableOpacity>
     	)
     }
@@ -95,11 +95,10 @@ class AddUserForm extends Component {
   
     return (
       
-      
       <View style={styles.container}>
         
         <View style={styles.newUserForm}>
-        	<Text style={styles.title}>Sign up as a new user</Text>
+        	<Text style={styles.title}> Sign up as a new user </Text>
         
     	
     		<TextInput
@@ -123,12 +122,11 @@ class AddUserForm extends Component {
     			style={styles.button}
     			onPress={() => this.props.navigation.navigate('SignInForm')} 
     		>
-      		<Text style={styles.buttonText}>Already registered ?</Text>
+      		<Text>Already registered ?</Text>
     		</TouchableOpacity>
         
         </View>
       </View>
-      
       
     );
   }
@@ -140,48 +138,26 @@ const styles = StyleSheet.create({
   container: {
   	flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'stretch',
+        justifyContent: 'center',
+        alignItems: 'center',
   },
   newUserForm: {
-  	backgroundColor: 'powderblue',
-  	borderRadius: 7,
-    borderWidth: 1,
-    borderColor: 'black',
-  	alignItems: 'stretch',
-  	margin : 20,
+  	flex: 1,
   },
   button: {
-    margin : 10,
-    backgroundColor: 'steelblue',
-    padding : 10,
-    borderRadius: 7,
+    
+    
   },
   forbiddenButton: {
-    margin : 10,
-    backgroundColor: 'red',
-    padding : 10,
-    borderRadius: 7,
+    
+    
   },
   deckInput : {
-  	backgroundColor: 'white',
-    borderRadius: 7,
-    borderWidth: 1,
-    borderColor: 'black',
-    color : 'black',
-    padding : 10,
-    margin : 10,
+    
   },
   title : {
-    fontSize: 19,
-    fontWeight: 'bold',
-    margin : 10,
-    alignSelf: 'center',
+    
   },
-  buttonText : {
-  	alignSelf: 'center',
-  	color : 'black',
-  }
 });
 
 

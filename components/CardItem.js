@@ -60,7 +60,7 @@ class CardItem extends React.Component {
     			style={styles.forbiddenButton}
     			onPress={() => Alert.alert('Tu dois au moins tenter une réponse, crétin!!')}
     		>
-      		<Text>Submit answer</Text>
+      		<Text style={styles.buttonText}>Submit answer</Text>
     		</TouchableOpacity>
     	)
     } else {
@@ -69,7 +69,7 @@ class CardItem extends React.Component {
     			style={styles.button}
     			onPress={() => this.handleSubmit(deckTitle, questionArray, arraycard, worth, id)}
     		>
-      		<Text> Submit answer </Text>
+      		<Text style={styles.buttonText}> Submit answer </Text>
     		</TouchableOpacity>
     	)
     }
@@ -85,7 +85,7 @@ class CardItem extends React.Component {
     			style={styles.forbiddenButton}
     			onPress={() => Alert.alert('Tu dois au moins tenter une réponse, crétin!!')}
     		>
-      		<Text> Move to next question </Text>
+      		<Text style={styles.buttonText}> Move to next question </Text>
     		</TouchableOpacity>
     	)
     } else {
@@ -96,7 +96,7 @@ class CardItem extends React.Component {
     			this.setState({ cardNumber : this.state.cardNumber<length-1 ? this.state.cardNumber+1 : 0 })
     			}}
     		>
-      		<Text> Move to next question </Text>
+      		<Text style={styles.buttonText}> Move to next question </Text>
     		</TouchableOpacity>
     	)
     }
@@ -134,14 +134,14 @@ class CardItem extends React.Component {
     
     return (
       <View style={styles.container}>
-      
+      <View style={styles.newUserForm}>
       
         <Text style={styles.title}>
         	<Text>Card number { this.state.cardNumber + 1 }</Text>{'\n'}
         </Text>
         
-        <Text>
-        	<Text>{length - this.state.cardNumber - 1} remaining questions</Text>{'\n'}
+        <Text style={styles.buttonText}>
+        	<Text>{length - this.state.cardNumber } remaining questions</Text>{'\n'}
         	<Text>Question : {questionArray[this.state.cardNumber].question}</Text>{'\n'}
         	<Text>Question s worth : {questionArray[this.state.cardNumber].worth} points</Text>{'\n'}
         </Text>
@@ -170,13 +170,13 @@ class CardItem extends React.Component {
     			}
     		}
     	>
-      	<Text> Move to preceding question </Text>
+      	<Text style={styles.buttonText}> Move to preceding question </Text>
     	</TouchableOpacity>
     	
     	
     	
         
-        
+        </View>
       </View>
     );
   }
@@ -186,25 +186,39 @@ class CardItem extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: 4,
-    borderWidth: 0.5,
-    margin : 10,
+  	flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'stretch',
   },
-  title: {
-    fontSize: 19,
-    fontWeight: 'bold',
-    color: 'green',
-    padding: 20,
-    textAlign : 'center'
-  },
-  activeTitle: {
-    color: 'red',
+  newUserForm: {
+  	backgroundColor: 'powderblue',
+  	borderRadius: 7,
+    borderWidth: 1,
+    borderColor: 'black',
+  	alignItems: 'stretch',
+  	margin : 20,
   },
   button: {
-    alignItems: 'center',
-    backgroundColor: '#DDDDDD',
-    padding: 10,
-    margin : 10
+    margin : 10,
+    backgroundColor: 'steelblue',
+    padding : 10,
+    borderRadius: 7,
+  },
+  forbiddenButton: {
+    margin : 10,
+    backgroundColor: 'red',
+    padding : 10,
+    borderRadius: 7,
+  },
+  deckInput : {
+  	backgroundColor: 'white',
+    borderRadius: 7,
+    borderWidth: 1,
+    borderColor: 'black',
+    color : 'black',
+    padding : 10,
+    margin : 10,
   },
   answerInput : {
     alignItems: 'center',
@@ -215,14 +229,18 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: 'black',
   },
-  forbiddenButton: {
-    alignItems: 'center',
-    textAlign : 'center',
-    backgroundColor: 'red',
-    padding: 10,
-    margin : 10
+  title : {
+    fontSize: 19,
+    fontWeight: 'bold',
+    margin : 10,
+    alignSelf: 'center',
   },
+  buttonText : {
+  	alignSelf: 'center',
+  	color : 'black',
+  }
 });
+
 
 
 function mapStateToProps (decks) {
