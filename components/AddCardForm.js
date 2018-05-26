@@ -51,11 +51,20 @@ class AddCardForm extends Component {
   
   renderSubmitButton = (deckName, id) => {
   
-  	if(this.state.question === '' || this.state.answer === '' || this.state.worth === ''){
+  	if(this.state.question === '' || this.state.answer === '' ){
     	return(
     		<TouchableOpacity 
     			style={styles.forbiddenButton}
-    			onPress={() => Alert.alert('Tu dois dabord remplir le formulaire, abruti!!')}
+    			onPress={() => { Alert.alert('Tu dois dabord remplir le formulaire, abruti!!')}}
+    		>
+      		<Text>Add new card to deck</Text>
+    		</TouchableOpacity>
+    	)
+    } else if(this.state.worth === 0 ||isNaN(parseInt(this.state.worth)) || this.state.worth === ''){
+    	return(
+    		<TouchableOpacity 
+    			style={styles.forbiddenButton}
+    			onPress={() => { Alert.alert('La valeur doit être un nombre, abruti!!')}}
     		>
       		<Text>Add new card to deck</Text>
     		</TouchableOpacity>
@@ -64,7 +73,7 @@ class AddCardForm extends Component {
     	return(
     		<TouchableOpacity 
     			style={styles.button}
-    			onPress={() => this.handleSubmit(deckName, id)}
+    			onPress={() => { this.handleSubmit(deckName, id) }}
     		>
       		<Text>Add new card to deck</Text>
     		</TouchableOpacity>
@@ -107,7 +116,8 @@ class AddCardForm extends Component {
         <TextInput
           style={styles.deckInput}
           placeholder="Enter here the question's worth"
-          onChangeText={(text) => this.setState({worth : Number(text)})}
+          //onChangeText={(text) => this.setState({worth : parseInt(text)})}
+          onChangeText={(text) => this.setState({worth : text})}
         />
         
     	

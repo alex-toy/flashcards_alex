@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation'
 
 import ModalInput from './ModalInput'
+import FadeInTitle from './FadeInTitle'
 
 
 class AddUserForm extends Component {
@@ -102,11 +103,18 @@ class AddUserForm extends Component {
   
   	return (
       
-      
       <View style={styles.container}>
+      
+        
         
         <View style={styles.newUserForm}>
-        	<Text style={styles.title}>Sign up as a new user</Text>
+        	
+        	
+        	
+        	<FadeInTitle 
+        		style={styles.title}
+        		text='Sign up as a new user' 
+        	/>
         
     	
     		<TextInput

@@ -38,7 +38,6 @@ class DeckList extends React.Component {
   render() {
   
   	const { decks, screenProps } = this.props
-  	console.log(decks)
   	const arraydeck = Object.entries(decks)
   	const pseudo = screenProps.pseudo
   	

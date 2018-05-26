@@ -13,3 +13,6 @@ To launch it you need to install react on your computer and then :
 2) npm install
 
 3) npm start
+
+
+Once the app is working, please enter a pseudo and password, then enjoy !! ;-)

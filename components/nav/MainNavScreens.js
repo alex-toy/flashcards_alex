@@ -7,7 +7,8 @@ import AddUserForm from '../AddUserForm'
 import TabNav from './TabNav'
 import SignInForm from '../SignInForm'
 import DeckList from '../DeckList'
-
+import DisplayAnImageWithStyle from '../DisplayAnImageWithStyle'
+import InitialAnimation from '../InitialAnimation'
 
 
 const AuthScreens = SwitchNavigator(
@@ -15,9 +16,12 @@ const AuthScreens = SwitchNavigator(
     AddUserForm : AddUserForm,
     SignInForm : SignInForm,
     TabNav : TabNav,
+    DisplayAnImageWithStyle : DisplayAnImageWithStyle,
+	InitialAnimation : InitialAnimation
+    
   },
   {
-    initialRouteName: 'AddUserForm',
+    initialRouteName: 'DisplayAnImageWithStyle',
   }
 );
 
